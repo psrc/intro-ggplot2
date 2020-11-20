@@ -14,7 +14,7 @@ knitr::opts_chunk$set(echo = TRUE)
 knitr::opts_chunk$set(eval = FALSE)
 ```
 
-Fonts are tricky to work with in R. Unfortunately R and ggplot2 don't recognize fonts outside of their standard 3 without a little work. Below are some one-time steps to allow R to recognize different fonts for bitmap and screen output (e.g. RStudio's Plot Pane, .jpg, .png) and PDFs. 
+Fonts are tricky to work with in R. R and ggplot2 won't recognize fonts outside of their default 3 fonts without a little work. Below are some one-time steps to have R recognize and register different fonts for bitmap and screen output (e.g. RStudio's Plot Pane, .jpg, .png) and PDFs. 
 
 The instructions below are adapted from the ones in the [extrafont vignette](https://cran.r-project.org/web/packages/extrafont/README.html) for a Windows machine. I've made some minor changes and omitted steps (e.g. GhostScript installation) in order for it to work on my computer. 
 
