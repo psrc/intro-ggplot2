@@ -1,5 +1,5 @@
 ---
-title: "Tidy and Wrangle Data for ggplot2"
+title: "Tidy Data for ggplot2"
 output: 
   html_document:
     theme: readable
@@ -10,7 +10,9 @@ knitr::opts_chunk$set(echo = TRUE)
 knitr::opts_chunk$set(eval = FALSE)
 ```
 
-The data that was used for the [Intro to ggplot2](https://psrc.github.io/intro-ggplot2/) module had already been cleaned and transformed ahead of time. While we didn't spend time on the details of that process, it shouldn't be overlooked. The code below documents that process. Having tidy data is an important step when working with ggplot2. By cleaning and transforming first, you will save yourself many lines of code and prevent hardcoding, especially if the dataset is updated on a frequent basis with new additional data each time.
+The data used for the code-a-long in the [Intro to ggplot2](https://psrc.github.io/intro-ggplot2/) module will have been cleaned and transformed ahead of time. While we won't spend time on the details of that process, it shouldn't be overlooked. The code below documents how it was done. 
+
+Having tidy data is an important step when working with ggplot2. It becomes especially important if the dataset has recurring updates with new additional data each time. By cleaning and transforming first, you will save yourself many lines of code and prevent hardcoding. 
 
 The original data source can be downloaded [here](https://www.ofm.wa.gov/sites/default/files/public/dataresearch/pop/april1/ofm_april1_population_final.xlsx) from the Office of Financial Management (OFM). 
 
@@ -18,15 +20,16 @@ To run this code on your own machine:
 
 - copy the code below into a new R script file
 - set `my.dir` to a directory of your choice
-- store the original data file in that directory
+- store the original data file from OFM in that directory
 - Run line by line to see how the data is transformed
 
 For more information about tidy data, see the *Tidying Messy Datasets* section in [this summary](https://cran.r-project.org/web/packages/tidyr/vignettes/tidy-data.html).
 
 ```{r}
-# This script uses base R syntax to read-in OFM April 1 Total Population data and transforms it to be used with ggplot2
+# This script uses base R syntax with the help of other libraries to read-in OFM April 1 Total Population 
+# data and to transform it so that it is ggplot2-ready.
 
-library(openxlsx) # reads excel file
+library(openxlsx) # reads excel files
 library(reshape2) # helps pivot data
 library(stringr) # tools to extract parts of strings using regular expressions
 library(lubridate) # tools to convert data into various date-time formats
@@ -42,8 +45,10 @@ keep.cols <- setdiff(colnames(region), "Line")
 region <- region[, keep.cols]
 
 # OFM publishes data in a cross-tab (wider) format 
-# pivot the table longer so that we have a new column called 'melted_cols'
-# to contain those column headers with information such as year, the data attribute (population), and data source type
+# melt table (pivot it longer) so that we have a new column called 'melted_cols'
+# 'melted_cols' will contain those former column headers 
+# that contain information such as year, the data attribute (population), 
+# and data source type (Census/Estimate)
 id.cols <- c("Filter", "County", "Jurisdiction")
 df <- melt(region, id.vars = id.cols, variable.name = "melted_cols", value.name = "Estimate")
 
