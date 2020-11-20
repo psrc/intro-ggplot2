@@ -1557,12 +1557,12 @@ div.tocify {
 </ol>
 <pre class="r"><code>font_import()</code></pre>
 <ol start="4" style="list-style-type: decimal">
-<li>Register the fonts for Windows</li>
+<li>Register the fonts for Windows.</li>
 </ol>
 <pre class="r"><code>loadfonts(&quot;win&quot;)</code></pre>
 <div id="test" class="section level2">
 <h2>Test</h2>
-<p>Let’s test it! See if this code will produce a plot in your plot pane</p>
+<p>Let’s test it! See if this code will produce a plot with the following font in your plot pane.</p>
 <pre class="r"><code>my.plot &lt;- ggplot(mtcars, aes(x=wt, y=mpg)) + 
   geom_point() +
   ggtitle(&quot;Fuel Efficiency of 32 Cars&quot;) +
@@ -1571,13 +1571,13 @@ div.tocify {
   theme(text = element_text(size=16, family=&quot;Impact&quot;))
 
 print(my.plot)</code></pre>
-<p>Now see if you can save it as a .jpg. Change the file path to a folder that works for you.</p>
+<p>Now see if you can save it as a .jpg. Change the file path or file name to one that works for you.</p>
 <pre class="r"><code>ggsave(&quot;T:/2020November/christy/my_plot.jpg&quot;, plot = my.plot, width = 4, height = 4)</code></pre>
 </div>
 </div>
 <div id="pdfs" class="section level1">
 <h1>PDFs</h1>
-<p>After completing the steps in Windows Bitmap Output, you also have the option of exporting your plot with custom font to PDF but it will require a special argument <code>device = cairo_pdf</code> when you use <code>ggsave()</code>.</p>
+<p>After completing the steps in <em>Windows Bitmap and Screen Output</em>, you also have the option of exporting your plot with custom font to PDF but it will require a special argument <code>device = cairo_pdf</code> when you use <code>ggsave()</code>.</p>
 <pre class="r"><code>ggsave(&quot;T:/2020November/christy/my_plot.pdf&quot;, plot = my.plot,  width=4, height=4, device = cairo_pdf)</code></pre>
 </div>
 <div id="font-choices" class="section level1">

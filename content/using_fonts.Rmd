@@ -39,13 +39,13 @@ library(extrafont)
 font_import()
 ```
 
-4. Register the fonts for Windows
+4. Register the fonts for Windows.
 ```{r}
 loadfonts("win")
 ```
 
 ## Test
-Let's test it! See if this code will produce a plot in your plot pane
+Let's test it! See if this code will produce a plot with the following font in your plot pane.
 ```{r}
 my.plot <- ggplot(mtcars, aes(x=wt, y=mpg)) + 
   geom_point() +
@@ -57,7 +57,7 @@ my.plot <- ggplot(mtcars, aes(x=wt, y=mpg)) +
 print(my.plot)
 ```
 
-Now see if you can save it as a .jpg. Change the file path to a folder that works for you.
+Now see if you can save it as a .jpg. Change the file path or file name to one that works for you.
 ```{r}
 ggsave("T:/2020November/christy/my_plot.jpg", plot = my.plot, width = 4, height = 4)
 ```
@@ -65,7 +65,7 @@ ggsave("T:/2020November/christy/my_plot.jpg", plot = my.plot, width = 4, height 
 
 # PDFs
 
-After completing the steps in Windows Bitmap Output, you also have the option of exporting your plot with custom font to PDF but it will require a special argument `device = cairo_pdf` when you use `ggsave()`. 
+After completing the steps in *Windows Bitmap and Screen Output*, you also have the option of exporting your plot with custom font to PDF but it will require a special argument `device = cairo_pdf` when you use `ggsave()`. 
 
 
 ```{r}
