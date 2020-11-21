@@ -1540,7 +1540,7 @@ div.tocify {
 
 <p>Fonts are tricky to work with in R. R and ggplot2 won’t recognize fonts outside of their default 3 fonts without a little work. Below are some one-time steps to have R recognize and register different fonts for bitmap and screen output (e.g. RStudio’s Plot Pane, .jpg, .png) and PDFs.</p>
 <p>The instructions below are adapted from the ones in the <a href="https://cran.r-project.org/web/packages/extrafont/README.html">extrafont vignette</a> for a Windows machine. I’ve made some minor changes and omitted steps (e.g. GhostScript installation) in order for it to work on my computer.</p>
-<p>Take the following code snippets and paste/run in the console of your RStudio IDE.</p>
+<p>Copy the following code snippets and paste/run in the console of your RStudio IDE.</p>
 <div id="windows-bitmap-and-screen-output" class="section level1">
 <h1>Windows Bitmap and Screen Output</h1>
 <p>If you want to use fonts other than the basic ones R recognizes and want it to render in the RStudio Plot Pane and in an exported bitmap file like .jpg, .png:</p>
@@ -1553,7 +1553,7 @@ div.tocify {
 </ol>
 <pre class="r"><code>library(extrafont)</code></pre>
 <ol start="3" style="list-style-type: decimal">
-<li>Run the font import function so that R can find and save information about fonts installed on your system. This step may take a while.</li>
+<li>Run the font import function so that R can find and save information about fonts installed on your system. This step may take a while. Maybe now’s a good time to go on a coffee break.</li>
 </ol>
 <pre class="r"><code>font_import()</code></pre>
 <ol start="4" style="list-style-type: decimal">
@@ -1563,7 +1563,9 @@ div.tocify {
 <div id="test" class="section level2">
 <h2>Test</h2>
 <p>Let’s test it! See if this code will produce a plot with the following font in your plot pane.</p>
-<pre class="r"><code>my.plot &lt;- ggplot(mtcars, aes(x=wt, y=mpg)) + 
+<pre class="r"><code>library(ggplot2)
+
+my.plot &lt;- ggplot(mtcars, aes(x=wt, y=mpg)) + 
   geom_point() +
   ggtitle(&quot;Fuel Efficiency of 32 Cars&quot;) +
   xlab(&quot;Weight (x1000 lb)&quot;) + 

@@ -18,7 +18,7 @@ Fonts are tricky to work with in R. R and ggplot2 won't recognize fonts outside 
 
 The instructions below are adapted from the ones in the [extrafont vignette](https://cran.r-project.org/web/packages/extrafont/README.html) for a Windows machine. I've made some minor changes and omitted steps (e.g. GhostScript installation) in order for it to work on my computer. 
 
-Take the following code snippets and paste/run in the console of your RStudio IDE.
+Copy the following code snippets and paste/run in the console of your RStudio IDE.
 
 # Windows Bitmap and Screen Output
 
@@ -34,7 +34,7 @@ install.packages("extrafont")
 library(extrafont)
 ```
 
-3. Run the font import function so that R can find and save information about fonts installed on your system. This step may take a while.
+3. Run the font import function so that R can find and save information about fonts installed on your system. This step may take a while. Maybe now's a good time to go on a coffee break.
 ```{r}
 font_import()
 ```
@@ -47,6 +47,8 @@ loadfonts("win")
 ## Test
 Let's test it! See if this code will produce a plot with the following font in your plot pane.
 ```{r}
+library(ggplot2)
+
 my.plot <- ggplot(mtcars, aes(x=wt, y=mpg)) + 
   geom_point() +
   ggtitle("Fuel Efficiency of 32 Cars") +
