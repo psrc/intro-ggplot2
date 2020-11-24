@@ -1,0 +1,123 @@
+---
+title: "Class Outline"
+output: 
+  html_document:
+    theme: readable
+    toc: true
+    toc_float: true
+    
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+knitr::opts_chunk$set(eval = FALSE)
+```
+This module will introduce ggplot2 syntax to create a bar graph and facetting. Extensions such as plotting using `ggplotly()` will also be demonstrated. Data for the code-a-long is a munged Office of Financial Management (OFM) dataset which you can find [here](). 
+
+Handy keyboard shortcuts for Windows:
+
+- Comment a line or lines: `Ctrl+Shift+C`
+- Toggle cursor between script and console panes: `Ctrl+1` and `Ctrl+2`
+- Create arrow `<-`: `Alt+-`
+
+# Intro to ggplot2
+
+## Setup
+Load the first three libraries. The fourth, `extrafont`, is optional depending on if you installed the package and followed additional steps [here](https://psrc.github.io/intro-ggplot2/content/using_fonts.html).
+```{r}
+library(openxlsx)
+library(ggplot2)
+library(scales)
+library(extrafont) # optional
+```
+
+
+You can replace the path below to where you've stored the data. Use forward slashes `/` or double back slashes `\\`
+```{r}
+df <- read.xlsx("T:/2020December/christy/ofm_april1_population_final_demo.xlsx", detectDates = T)
+```
+
+## Bar Graph
+
+To create a simple bar graph, we'll use a subset of the the data. Query for only total county estimates (where column `Filter` equals 1)
+```{r}
+df1 <- df[df$Filter == 1, ]
+```
+
+Initiate ggplot
+```{r}
+g <- ggplot()
+```
+
+
+Chain information! Below is a rough template of what we may or may not use to build our bar graph (subject to change!). We'll go through piece-by-piece to see each function's effect. 
+```{r}
+my.pal <- c('#f6eff7','#bdc9e1','#67a9cf','#02818a') # a custom color palette
+
+g +
+  geom_col(data = , 
+           aes(x = , y = ),
+           color = 
+  ) +
+  scale_fill_manual(values = ) +
+  labs(x = , y = , title = , subtitle = , caption = ) +
+  scale_x_discrete(breaks = , labels = ) +
+  scale_y_continuous(labels = ) +
+  theme(axis.text.x = element_text(angle = , 
+                                   hjust = , 
+                                   vjust = ,
+                                   family =
+                                   ),
+        axis.title.x = element_text(hjust = ),
+        axis.title.y = element_text(hjust = ),
+        axis.line = element_line(color = , size = , lineend = ),
+        axis.ticks = element_blank(),
+        legend.position = ,
+        text = element_text(family = )
+        )
+```
+
+Save the plot as a bitmap output file (e.g. .jpg)
+```{r}
+# set your ggplot and everything that's chained to it to a variable
+my.plot <- g + etc...
+
+ggsave("T:/2020December/christy/my_plot.jpg", plot = my.plot)
+```
+
+## Facets
+
+Also known as Trellis displays, facets are an easy way to display groups of data alongside each other.
+
+You can use `facet_wrap()` if you want your subplots laid out horizonally and wrapped around. Put your variable(s) within `vars()`. `vars()` like the `aes()` checks to see what the unique values of your variable(s) are and allows `facet_` to do what it needs to do to subplot. 
+
+For longtime users of ggplot2, you may have used the `~` notation in `facet_` functions. You've probably seen the `~` used in books or stack overflow answers. You can still get away with using `~` but it has been soft-deprecated and superceded with `vars()` like in the examples below. 
+```{r}
+g +
+  geom_col(data = df1, 
+           aes(x = , y = )
+           ) +
+  facet_wrap(vars(), ncol = , scales = )
+```
+
+Use `facet_grid()` when you want to split by at least two variables that generate vertical and horizontal panels.
+
+Let's create a facet grid where vertical panels are based on Filter values (Total County, Unincorporated County, and Incorporated County jurisdiction) and horizontal panels based on Counties. Query `df` for all records except for individual cities and towns.
+```{r}
+df2 <- df[df$Filter != 4, ]
+```
+
+
+```{r}
+g +
+  geom_col(data = df2, 
+           aes(x = , y = )
+  ) +
+  facet_grid(rows = vars(), cols = vars()) 
+  
+```
+
+
+
+# Extensions 
+
