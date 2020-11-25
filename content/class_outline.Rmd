@@ -121,3 +121,19 @@ g +
 
 # Extensions 
 
+## Plotly
+
+Plotly for R is a separate graphing library that specializes in interactive graphs. It has its own set of graphing functions and syntax but it doesn't mean you have to learn a completely new system inorder to have interactive graphs! Just use Plotly's `ggplotly()` around your ggplot object to integrate ggplot2 with Plotly.
+```{r}
+p <- g +
+  geom_col(data = , 
+           aes(x = , y = , fill = )
+  )
+
+p1 <- ggplotly(p)
+
+# when saving a ggplotly object to disk, use an .html extension
+htmlwidgets::saveWidget(p1, file="T:/2020December/christy/my_plot.html")  
+```
+
+

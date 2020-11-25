@@ -1615,6 +1615,19 @@ ggsave(&quot;T:/2020December/christy/my_plot.jpg&quot;, plot = my.plot)</code></
 </div>
 <div id="extensions" class="section level1">
 <h1>Extensions</h1>
+<div id="plotly" class="section level2">
+<h2>Plotly</h2>
+<p>Plotly for R is a separate graphing library that specializes in interactive graphs. It has its own set of graphing functions and syntax but it doesn’t mean you have to learn a completely new system inorder to have interactive graphs! Just use Plotly’s <code>ggplotly()</code> around your ggplot object to integrate ggplot2 with Plotly.</p>
+<pre class="r"><code>p &lt;- g +
+  geom_col(data = , 
+           aes(x = , y = , fill = )
+  )
+
+p1 &lt;- ggplotly(p)
+
+# when saving a ggplotly object to disk, use an .html extension
+htmlwidgets::saveWidget(p1, file=&quot;T:/2020December/christy/my-plot.html&quot;)  </code></pre>
+</div>
 </div>
 
 
