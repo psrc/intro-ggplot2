@@ -12,7 +12,24 @@ output:
 knitr::opts_chunk$set(echo = TRUE)
 knitr::opts_chunk$set(eval = FALSE)
 ```
-This module will introduce ggplot2 syntax to create a bar graph and facetting. Extensions such as plotting using `ggplotly()` will also be demonstrated. Data for the code-a-long is a munged Office of Financial Management (OFM) dataset which you can find [here](). 
+
+```{=html}
+<style type="text/css">
+  .figure {
+    float: right;
+    text-align: center;
+    width: 50%;
+  }
+</style>
+```
+
+```{r fig.cap = "artwork by @allison_horst", echo=FALSE, eval = TRUE}
+knitr::include_graphics('C:/Users/clam/Documents/github/intro-ggplot2/images/ggplot2_masterpiece.png')
+```
+
+This module will introduce ggplot2 syntax to create a bar graph and facetting. Extensions such as plotting using `ggplotly()` will also be demonstrated. 
+
+Data for the code-a-long is a munged Office of Financial Management (OFM) dataset which you can find [here](). 
 
 Handy keyboard shortcuts for Windows:
 
