@@ -29,7 +29,7 @@ knitr::include_graphics('C:/Users/clam/Documents/github/intro-ggplot2/images/ggp
 
 This module will introduce ggplot2 syntax to create a bar graph and facetting. Extensions such as plotting using `ggplotly()` will also be demonstrated. 
 
-Data for the code-a-long is a munged Office of Financial Management (OFM) dataset which you can find [here](). 
+Data for the code-a-long is a munged OFM April 1 dataset which you can find [here](). For more information about April 1 Estimates, and its original format see [Office of Financial Management (OFM)](https://www.ofm.wa.gov/washington-data-research/population-demographics/population-estimates/april-1-official-population-estimates). 
 
 Handy keyboard shortcuts for Windows:
 
@@ -38,6 +38,8 @@ Handy keyboard shortcuts for Windows:
 - Create arrow `<-`: `Alt+-`
 
 # Intro to ggplot2
+
+You can copy and paste snippets from this outline into your script or type along. Some code may differ from what will be presented during the session.
 
 ## Setup
 Load the first three libraries. The fourth, `extrafont`, is optional depending on if you installed the package and followed additional steps [here](https://psrc.github.io/intro-ggplot2/content/using_fonts.html).
@@ -51,7 +53,7 @@ library(extrafont) # optional
 
 You can replace the path below to where you've stored the data. Use forward slashes `/` or double back slashes `\\`
 ```{r}
-df <- read.xlsx("T:/2020December/christy/ofm_april1_population_final_demo.xlsx", detectDates = T)
+df <- read.xlsx("T:/2020December/christy/ofm_april1_population_final_tidied.xlsx", detectDates = T)
 ```
 
 ## Bar Graph
@@ -74,12 +76,13 @@ my.pal <- c('#f6eff7','#bdc9e1','#67a9cf','#02818a') # a custom color palette
 g +
   geom_col(data = , 
            aes(x = , y = ),
-           color = 
+           position = 
   ) +
+  scale_fill_brewer(palette = ) +
   scale_fill_manual(values = ) +
-  labs(x = , y = , title = , subtitle = , caption = ) +
   scale_x_discrete(breaks = , labels = ) +
   scale_y_continuous(labels = ) +
+  labs(x = , y = , title = , subtitle = , caption = ) +
   theme(axis.text.x = element_text(angle = , 
                                    hjust = , 
                                    vjust = ,
@@ -97,7 +100,7 @@ g +
 Save the plot as a bitmap output file (e.g. .jpg)
 ```{r}
 # set your ggplot and everything that's chained to it to a variable
-my.plot <- g + etc...
+my.plot <- g + <other stuff>
 
 ggsave("T:/2020December/christy/my_plot.jpg", plot = my.plot)
 ```
@@ -106,9 +109,10 @@ ggsave("T:/2020December/christy/my_plot.jpg", plot = my.plot)
 
 Also known as Trellis displays, facets are an easy way to display groups of data alongside each other.
 
+### Facet Wrap
+
 You can use `facet_wrap()` if you want your subplots laid out horizonally and wrapped around. Put your variable(s) within `vars()`. `vars()` like the `aes()` checks to see what the unique values of your variable(s) are and allows `facet_` to do what it needs to do to subplot. 
 
-For longtime users of ggplot2, you may have used the `~` notation in `facet_` functions. You've probably seen the `~` used in books or stack overflow answers. You can still get away with using `~` but it has been soft-deprecated and superceded with `vars()` like in the examples below. 
 ```{r}
 g +
   geom_col(data = df1, 
@@ -116,6 +120,10 @@ g +
            ) +
   facet_wrap(vars(), ncol = , scales = )
 ```
+
+*For longtime users of ggplot2, you may have used the `~` notation in `facet_` functions. You've probably seen the `~` used in books or stack overflow answers. You can still get away with using `~` but it has been soft-deprecated and superceded with `vars()` like in the examples below. 
+
+### Facet Grid
 
 Use `facet_grid()` when you want to split by at least two variables that generate vertical and horizontal panels.
 
@@ -140,7 +148,16 @@ g +
 
 ## Plotly
 
-Plotly for R is a separate graphing library that specializes in interactive graphs. It has its own set of graphing functions and syntax but it doesn't mean you have to learn a completely new system inorder to have interactive graphs! Just use Plotly's `ggplotly()` around your ggplot object to integrate ggplot2 with Plotly.
+Plotly for R is a separate graphing library that specializes in interactive graphs. Plotly is part of the [htmlwidgets](https://www.htmlwidgets.org/showcase_plotly.html) family -- libraries that are originally written in JavaScript then bound with R. It has its own set of graphing functions and syntax but it doesn't mean you have to learn a completely new system inorder to have interactive graphs! 
+
+Load the `plotly` and `htmlwidgets` library
+```{r}
+library(ggplot2)
+library(plotly)
+library(htmlwidgets)
+```
+
+Just use Plotly's `ggplotly()` around your ggplot object to integrate ggplot2 with Plotly.
 ```{r}
 p <- g +
   geom_col(data = , 
@@ -150,12 +167,12 @@ p <- g +
 p1 <- ggplotly(p)
 
 # when saving a ggplotly object to disk, use a .html extension
-htmlwidgets::saveWidget(p1, file="T:/2020December/christy/my_plot.html")  
+saveWidget(p1, file="T:/2020December/christy/my_plot.html")  
 ```
 
 ## Others
 
-Sometimes ggplot2 on its own can only do so much. Where there is a gap, R users have built on top of ggplot2 and created their own libraries to enhance ggplot2 graphs with animation, better fitted labeling, or specialty geoms to name a few. You can check out the ggplot2 extension gallery here:
+Sometimes ggplot2 on its own can only do so much. Where there is a gap, R users have built on top of ggplot2 and created their own libraries to enhance ggplot2 graphs either with animation, better fitted labeling, or specialty geoms to name a few. You can check out the ggplot2 extension gallery here:
 
 [https://exts.ggplot2.tidyverse.org/gallery/](https://exts.ggplot2.tidyverse.org/gallery/)
 

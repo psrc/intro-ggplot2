@@ -1552,7 +1552,7 @@ artwork by <span class="citation">@allison_horst</span>
 </p>
 </div>
 <p>This module will introduce ggplot2 syntax to create a bar graph and facetting. Extensions such as plotting using <code>ggplotly()</code> will also be demonstrated.</p>
-<p>Data for the code-a-long is a munged Office of Financial Management (OFM) dataset which you can find <a href>here</a>.</p>
+<p>Data for the code-a-long is a munged OFM April 1 dataset which you can find <a href>here</a>. For more information about April 1 Estimates, and its original format see <a href="https://www.ofm.wa.gov/washington-data-research/population-demographics/population-estimates/april-1-official-population-estimates">Office of Financial Management (OFM)</a>.</p>
 <p>Handy keyboard shortcuts for Windows:</p>
 <ul>
 <li>Comment a line or lines: <code>Ctrl+Shift+C</code></li>
@@ -1561,6 +1561,7 @@ artwork by <span class="citation">@allison_horst</span>
 </ul>
 <div id="intro-to-ggplot2" class="section level1">
 <h1>Intro to ggplot2</h1>
+<p>You can copy and paste snippets from this outline into your script or type along. Some code may differ from what will be presented during the session.</p>
 <div id="setup" class="section level2">
 <h2>Setup</h2>
 <p>Load the first three libraries. The fourth, <code>extrafont</code>, is optional depending on if you installed the package and followed additional steps <a href="https://psrc.github.io/intro-ggplot2/content/using_fonts.html">here</a>.</p>
@@ -1569,7 +1570,7 @@ library(ggplot2)
 library(scales)
 library(extrafont) # optional</code></pre>
 <p>You can replace the path below to where you’ve stored the data. Use forward slashes <code>/</code> or double back slashes <code>\\</code></p>
-<pre class="r"><code>df &lt;- read.xlsx(&quot;T:/2020December/christy/ofm_april1_population_final_demo.xlsx&quot;, detectDates = T)</code></pre>
+<pre class="r"><code>df &lt;- read.xlsx(&quot;T:/2020December/christy/ofm_april1_population_final_tidied.xlsx&quot;, detectDates = T)</code></pre>
 </div>
 <div id="bar-graph" class="section level2">
 <h2>Bar Graph</h2>
@@ -1583,12 +1584,13 @@ library(extrafont) # optional</code></pre>
 g +
   geom_col(data = , 
            aes(x = , y = ),
-           color = 
+           position = 
   ) +
+  scale_fill_brewer(palette = ) +
   scale_fill_manual(values = ) +
-  labs(x = , y = , title = , subtitle = , caption = ) +
   scale_x_discrete(breaks = , labels = ) +
   scale_y_continuous(labels = ) +
+  labs(x = , y = , title = , subtitle = , caption = ) +
   theme(axis.text.x = element_text(angle = , 
                                    hjust = , 
                                    vjust = ,
@@ -1603,20 +1605,25 @@ g +
         )</code></pre>
 <p>Save the plot as a bitmap output file (e.g. .jpg)</p>
 <pre class="r"><code># set your ggplot and everything that&#39;s chained to it to a variable
-my.plot &lt;- g + etc...
+my.plot &lt;- g + &lt;other stuff&gt;
 
 ggsave(&quot;T:/2020December/christy/my_plot.jpg&quot;, plot = my.plot)</code></pre>
 </div>
 <div id="facets" class="section level2">
 <h2>Facets</h2>
 <p>Also known as Trellis displays, facets are an easy way to display groups of data alongside each other.</p>
+<div id="facet-wrap" class="section level3">
+<h3>Facet Wrap</h3>
 <p>You can use <code>facet_wrap()</code> if you want your subplots laid out horizonally and wrapped around. Put your variable(s) within <code>vars()</code>. <code>vars()</code> like the <code>aes()</code> checks to see what the unique values of your variable(s) are and allows <code>facet_</code> to do what it needs to do to subplot.</p>
-<p>For longtime users of ggplot2, you may have used the <code>~</code> notation in <code>facet_</code> functions. You’ve probably seen the <code>~</code> used in books or stack overflow answers. You can still get away with using <code>~</code> but it has been soft-deprecated and superceded with <code>vars()</code> like in the examples below.</p>
 <pre class="r"><code>g +
   geom_col(data = df1, 
            aes(x = , y = )
            ) +
   facet_wrap(vars(), ncol = , scales = )</code></pre>
+<p>*For longtime users of ggplot2, you may have used the <code>~</code> notation in <code>facet_</code> functions. You’ve probably seen the <code>~</code> used in books or stack overflow answers. You can still get away with using <code>~</code> but it has been soft-deprecated and superceded with <code>vars()</code> like in the examples below.</p>
+</div>
+<div id="facet-grid" class="section level3">
+<h3>Facet Grid</h3>
 <p>Use <code>facet_grid()</code> when you want to split by at least two variables that generate vertical and horizontal panels.</p>
 <p>Let’s create a facet grid where vertical panels are based on Filter values (Total County, Unincorporated County, and Incorporated County jurisdiction) and horizontal panels based on Counties. Query <code>df</code> for all records except for individual cities and towns.</p>
 <pre class="r"><code>df2 &lt;- df[df$Filter != 4, ]</code></pre>
@@ -1627,11 +1634,17 @@ ggsave(&quot;T:/2020December/christy/my_plot.jpg&quot;, plot = my.plot)</code></
   facet_grid(rows = vars(), cols = vars()) </code></pre>
 </div>
 </div>
+</div>
 <div id="extensions" class="section level1">
 <h1>Extensions</h1>
 <div id="plotly" class="section level2">
 <h2>Plotly</h2>
-<p>Plotly for R is a separate graphing library that specializes in interactive graphs. It has its own set of graphing functions and syntax but it doesn’t mean you have to learn a completely new system inorder to have interactive graphs! Just use Plotly’s <code>ggplotly()</code> around your ggplot object to integrate ggplot2 with Plotly.</p>
+<p>Plotly for R is a separate graphing library that specializes in interactive graphs. Plotly is part of the <a href="https://www.htmlwidgets.org/showcase_plotly.html">htmlwidgets</a> family – libraries that are originally written in JavaScript then bound with R. It has its own set of graphing functions and syntax but it doesn’t mean you have to learn a completely new system inorder to have interactive graphs!</p>
+<p>Load the <code>plotly</code> and <code>htmlwidgets</code> library</p>
+<pre class="r"><code>library(ggplot2)
+library(plotly)
+library(htmlwidgets)</code></pre>
+<p>Just use Plotly’s <code>ggplotly()</code> around your ggplot object to integrate ggplot2 with Plotly.</p>
 <pre class="r"><code>p &lt;- g +
   geom_col(data = , 
            aes(x = , y = , fill = )
@@ -1640,11 +1653,11 @@ ggsave(&quot;T:/2020December/christy/my_plot.jpg&quot;, plot = my.plot)</code></
 p1 &lt;- ggplotly(p)
 
 # when saving a ggplotly object to disk, use a .html extension
-htmlwidgets::saveWidget(p1, file=&quot;T:/2020December/christy/my_plot.html&quot;)  </code></pre>
+saveWidget(p1, file=&quot;T:/2020December/christy/my_plot.html&quot;)  </code></pre>
 </div>
 <div id="others" class="section level2">
 <h2>Others</h2>
-<p>Sometimes ggplot2 on its own can only do so much. Where there is a gap, R users have built on top of ggplot2 and created their own libraries to enhance ggplot2 graphs with animation, better fitted labeling, or specialty geoms to name a few. You can check out the ggplot2 extension gallery here:</p>
+<p>Sometimes ggplot2 on its own can only do so much. Where there is a gap, R users have built on top of ggplot2 and created their own libraries to enhance ggplot2 graphs either with animation, better fitted labeling, or specialty geoms to name a few. You can check out the ggplot2 extension gallery here:</p>
 <p><a href="https://exts.ggplot2.tidyverse.org/gallery/">https://exts.ggplot2.tidyverse.org/gallery/</a></p>
 </div>
 </div>

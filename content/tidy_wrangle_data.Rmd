@@ -71,6 +71,6 @@ df$Estimate <- as.numeric(df$Estimate)
 str(df)
 
 # export table
-write.xlsx(df, file.path(my.dir, "ofm_april1_population_final_demo.xlsx"))
+write.xlsx(df, file.path(my.dir, "ofm_april1_population_final_tidied.xlsx"))
 ```
 
