@@ -121,7 +121,7 @@ g +
   facet_wrap(vars(), ncol = , scales = )
 ```
 
-*For longtime users of ggplot2, you may have used the `~` notation in `facet_` functions. You've probably seen the `~` used in books or stack overflow answers. You can still get away with using `~` but it has been soft-deprecated and superceded with `vars()` like in the examples below. 
+*For longtime users of ggplot2, you may have used the `~` notation in `facet_` functions. You've probably seen the `~` used in books or stack overflow answers. You can still get away with using `~` but it has been soft-deprecated and superceded with `vars()` like in the examples shown. 
 
 ### Facet Grid
 
