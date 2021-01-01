@@ -400,7 +400,7 @@ ggplot(mpg, aes(displ, hwy, color = class)) +
 <p><strong>Which are ways that you can change the legend titles? Select all that apply.</strong></p>
 <ol style="list-style-type: lower-alpha">
 <li><code>scale_color_discrete(name = legend.title)</code></li>
-<li><code>theme(legend.title = legend.title)</code></li>
+<li><code>theme(legend.title = element_text(legend.title))</code></li>
 <li><code>theme(legend.text = element_text(title = legend.title))</code></li>
 <li><code>labs(color = legend.title)</code></li>
 </ol>

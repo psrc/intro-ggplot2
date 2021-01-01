@@ -24,7 +24,7 @@ ggplot(mpg, aes(displ, hwy, color = class)) +
 **Which are ways that you can change the legend titles? Select all that apply.**
 
   a. `scale_color_discrete(name = legend.title)`
-  b. `theme(legend.title = legend.title)`
+  b. `theme(legend.title = element_text(legend.title))`
   c. `theme(legend.text = element_text(title = legend.title))`
   d. `labs(color = legend.title)`
 
