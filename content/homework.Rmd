@@ -42,7 +42,7 @@ ggplot(mpg, aes(displ, hwy, color = class)) +
 [^1]: Data Source: https://www.kaggle.com/crawford/80-cereals, gathered and cleaned up by Petra Isenberg, Pierre Dragicevic and Yvonne Jansen. Original source can be found [here](https://perso.telecom-paristech.fr/eagan/class/igr204/datasets)  
 
 
-  1. Download the [cereals dataset](https://github.com/psrc/intro-ggplot2/raw/main/data/cereals.xlsx), and read into R. Metadata can be found [here](https://www.kaggle.com/crawford/80-cereals)
+  1. Download the [cereals dataset](https://github.com/psrc/intro-ggplot2/raw/main/data/cereal.xlsx), and read into R. Metadata can be found [here](https://www.kaggle.com/crawford/80-cereals)
   2. Create a new column `sugars_per_oz` that calculates grams of sugars per ounce. 
   3. Create a scatterplot using `geom_point()` with `sugars_per_oz` on the x-axis and rating on the y-axis
   4. Map the manufacturer of the cereal to color and cereal type to shape 
