@@ -11,18 +11,73 @@ output:
 knitr::opts_chunk$set(echo = TRUE)
 knitr::opts_chunk$set(eval = FALSE)
 ```
+Given the following graph:
 
-**What are ways that you can add a title to your graph? Select all that apply.**
+```{r}
+title <- 'Fuel Economy of Popular Cars'
+legend.title <- 'Type of Car'
 
-  a. `labs(title = 'My Title')`
-  b. `ggtitle('My Title')`
-  c. `annotate('text', label = 'My Title', x = 2, y = max(df$y_value), size = 5.5)`
-  d. `theme(title = element_text('My Title'))`
+ggplot(mpg, aes(displ, hwy, color = class)) + 
+  geom_point()
+```
 
-**Create a bar graph of cities/towns with greatest growth between 2010 and 2020**  
+**Which are ways that you can change the legend titles? Select all that apply.**
+
+  a. `scale_color_discrete(name = legend.title)`
+  b. `theme(legend.title = legend.title)`
+  c. `theme(legend.text = element_text(title = legend.title))`
+  d. `labs(color = legend.title)`
+
+**Which are ways that you can add a title to your graph? Select all that apply.**
+
+  a. `labs(title = title)`
+  b. `ggtitle(title)`
+  c. `annotate('text', label = title, x = min(mpg$displ) + 3.5, y = max(mpg$hwy), size = 4)`
+  d. `theme(plot.title = element_text(title))`
+
+***
+
+**Create a scatterplot exploring select breakfast cereals[^1]. What is the relationship between cereal ratings and grams of sugar?**  
+
+[^1]: Data Source: https://www.kaggle.com/crawford/80-cereals, gathered and cleaned up by Petra Isenberg, Pierre Dragicevic and Yvonne Jansen. Original source can be found [here](https://perso.telecom-paristech.fr/eagan/class/igr204/datasets)  
+
+
+  1. Download the [cereals dataset](https://github.com/psrc/intro-ggplot2/raw/main/data/cereals.xlsx), and read into R. Metadata can be found [here](https://www.kaggle.com/crawford/80-cereals)
+  2. Create a new column `sugars_per_oz` that calculates grams of sugars per ounce. 
+  3. Create a scatterplot using `geom_point()` with `sugars_per_oz` on the x-axis and rating on the y-axis
+  4. Map the manufacturer of the cereal to color and cereal type to shape 
+  5. Change the shapes to anything but the default ones
+      - To find out what shape options are available run the following
+      
+```{r}
+df_shapes <- data.frame(shape = 0:24)
+ggplot(df_shapes, aes(0, 0, shape = shape)) +
+  geom_point(aes(shape = shape), size = 5, fill = 'red') +
+  scale_shape_identity() +
+  facet_wrap(~shape) +
+  theme_void()
+```
+
+**Notice anything interesting with the sugar column in the dataset?**  
+
+  6. What is the range of the sugars per ounce column?
+  7. Which cereal(s) contains the greatest amount of sugars per ounce? Cereals with 0 grams? Less than 0?
+  
+**On which shelf can you find the cereal with the highest rating?**  
+
+  8. Facet wrap by display shelf (1, 2, or 3, counting from the floor)
+  9. Rename x & y axis labels
+  10. Rename legend titles
+  11. Add a label using `geom_text()` for the cereal with the highest rating
+  12. Things might look a bit squished. Try reducing the size of the label and the legend labels
+
+***
+
+**Create a bar graph of cities/towns with greatest nominal growth between 2010 and 2020**  
+
 Using `ofm_april1_population_final_tidied.xlsx`...
 
-  1. Subset for cities/towns and where year is 2010 or 2020
+  1. Subset for cities/towns and where year is 2010 and 2020
   2. Cast the data using the `dcast()` function from the `reshape2` package: 
       - `reshape2::dcast(<your data frame>, County + Jurisdiction ~ paste0("Year_", Year_chr), value.var = "Estimate")`
   3. Create a new column containing the difference
@@ -35,6 +90,6 @@ Using `ofm_april1_population_final_tidied.xlsx`...
       - Add a title and source caption
   7. What order are the cities/town in? Can you reorder the cities/towns based on the value of the difference column?
       - convert the `Jurisdiction` column to a factor
-      - use the `reorder()`
+      - use `reorder()`
 
 

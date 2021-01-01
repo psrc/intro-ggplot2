@@ -391,17 +391,62 @@ summary {
 </div>
 
 
-<p><strong>What are ways that you can add a title to your graph? Select all that apply.</strong></p>
+<p>Given the following graph:</p>
+<pre class="r"><code>title &lt;- &#39;Fuel Economy of Popular Cars&#39;
+legend.title &lt;- &#39;Type of Car&#39;
+
+ggplot(mpg, aes(displ, hwy, color = class)) + 
+  geom_point()</code></pre>
+<p><strong>Which are ways that you can change the legend titles? Select all that apply.</strong></p>
 <ol style="list-style-type: lower-alpha">
-<li><code>labs(title = &#39;My Title&#39;)</code></li>
-<li><code>ggtitle(&#39;My Title&#39;)</code></li>
-<li><code>annotate(&#39;text&#39;, label = &#39;My Title&#39;, x = 2, y = max(df$y_value), size = 5.5)</code></li>
-<li><code>theme(title = element_text(&#39;My Title&#39;))</code></li>
+<li><code>scale_color_discrete(name = legend.title)</code></li>
+<li><code>theme(legend.title = legend.title)</code></li>
+<li><code>theme(legend.text = element_text(title = legend.title))</code></li>
+<li><code>labs(color = legend.title)</code></li>
 </ol>
-<p><strong>Create a bar graph of cities/towns with greatest growth between 2010 and 2020</strong><br />
-Using <code>ofm_april1_population_final_tidied.xlsx</code>…</p>
+<p><strong>Which are ways that you can add a title to your graph? Select all that apply.</strong></p>
+<ol style="list-style-type: lower-alpha">
+<li><code>labs(title = title)</code></li>
+<li><code>ggtitle(title)</code></li>
+<li><code>annotate(&#39;text&#39;, label = title, x = min(mpg$displ) + 3.5, y = max(mpg$hwy), size = 4)</code></li>
+<li><code>theme(plot.title = element_text(title))</code></li>
+</ol>
+<hr />
+<p><strong>Create a scatterplot exploring select breakfast cereals<a href="#fn1" class="footnote-ref" id="fnref1"><sup>1</sup></a>. What is the relationship between cereal ratings and grams of sugar?</strong></p>
 <ol style="list-style-type: decimal">
-<li>Subset for cities/towns and where year is 2010 or 2020</li>
+<li>Download the <a href="https://github.com/psrc/intro-ggplot2/raw/main/data/cereals.xlsx">cereals dataset</a>, and read into R. Metadata can be found <a href="https://www.kaggle.com/crawford/80-cereals">here</a></li>
+<li>Create a new column <code>sugars_per_oz</code> that calculates grams of sugars per ounce.</li>
+<li>Create a scatterplot using <code>geom_point()</code> with <code>sugars_per_oz</code> on the x-axis and rating on the y-axis</li>
+<li>Map the manufacturer of the cereal to color and cereal type to shape</li>
+<li>Change the shapes to anything but the default ones
+<ul>
+<li>To find out what shape options are available run the following</li>
+</ul></li>
+</ol>
+<pre class="r"><code>df_shapes &lt;- data.frame(shape = 0:24)
+ggplot(df_shapes, aes(0, 0, shape = shape)) +
+  geom_point(aes(shape = shape), size = 5, fill = &#39;red&#39;) +
+  scale_shape_identity() +
+  facet_wrap(~shape) +
+  theme_void()</code></pre>
+<p><strong>Notice anything interesting with the sugar column in the dataset?</strong></p>
+<ol start="6" style="list-style-type: decimal">
+<li>What is the range of the sugars per ounce column?</li>
+<li>Which cereal(s) contains the greatest amount of sugars per ounce? Cereals with 0 grams? Less than 0?</li>
+</ol>
+<p><strong>On which shelf can you find the cereal with the highest rating?</strong></p>
+<ol start="8" style="list-style-type: decimal">
+<li>Facet wrap by display shelf (1, 2, or 3, counting from the floor)</li>
+<li>Rename x &amp; y axis labels</li>
+<li>Rename legend titles</li>
+<li>Add a label using <code>geom_text()</code> for the cereal with the highest rating</li>
+<li>Things might look a bit squished. Try reducing the size of the label and the legend labels</li>
+</ol>
+<hr />
+<p><strong>Create a bar graph of cities/towns with greatest nominal growth between 2010 and 2020</strong></p>
+<p>Using <code>ofm_april1_population_final_tidied.xlsx</code>…</p>
+<ol style="list-style-type: decimal">
+<li>Subset for cities/towns and where year is 2010 and 2020</li>
 <li>Cast the data using the <code>dcast()</code> function from the <code>reshape2</code> package:
 <ul>
 <li><code>reshape2::dcast(&lt;your data frame&gt;, County + Jurisdiction ~ paste0(&quot;Year_&quot;, Year_chr), value.var = &quot;Estimate&quot;)</code></li>
@@ -419,9 +464,15 @@ Using <code>ofm_april1_population_final_tidied.xlsx</code>…</p>
 <li>What order are the cities/town in? Can you reorder the cities/towns based on the value of the difference column?
 <ul>
 <li>convert the <code>Jurisdiction</code> column to a factor</li>
-<li>use the <code>reorder()</code></li>
+<li>use <code>reorder()</code></li>
 </ul></li>
 </ol>
+<div class="footnotes">
+<hr />
+<ol>
+<li id="fn1"><p>Data Source: <a href="https://www.kaggle.com/crawford/80-cereals" class="uri">https://www.kaggle.com/crawford/80-cereals</a>, gathered and cleaned up by Petra Isenberg, Pierre Dragicevic and Yvonne Jansen. Original source can be found <a href="https://perso.telecom-paristech.fr/eagan/class/igr204/datasets">here</a><a href="#fnref1" class="footnote-back">↩︎</a></p></li>
+</ol>
+</div>
 
 
 
