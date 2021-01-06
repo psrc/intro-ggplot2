@@ -1570,7 +1570,9 @@ library(ggplot2)
 library(scales)
 library(extrafont) # optional</code></pre>
 <p>You can replace the path below to where you’ve stored the data. Use forward slashes <code>/</code> or double back slashes <code>\\</code></p>
-<pre class="r"><code>df &lt;- read.xlsx(&quot;T:/2020December/christy/ofm_april1_population_final_tidied.xlsx&quot;, detectDates = TRUE)</code></pre>
+<pre class="r"><code>setwd(&quot;C:/Users/clam/Documents/github/intro-ggplot2/data&quot;)
+
+df &lt;- read.xlsx(&quot;ofm_april1_population_final_tidied.xlsx&quot;, detectDates = TRUE)</code></pre>
 </div>
 <div id="bar-graph" class="section level2">
 <h2>Bar Graph</h2>
@@ -1706,11 +1708,23 @@ g +
 <pre class="r"><code># set your ggplot and everything that&#39;s chained to it to a variable
 my.plot &lt;- g + &lt;other stuff&gt;
 
-ggsave(&quot;T:/2020December/christy/my_plot.jpg&quot;, plot = my.plot)</code></pre>
+ggsave(&quot;my_plot.jpg&quot;, plot = my.plot)</code></pre>
 </div>
 </div>
 <div id="other-geoms" class="section level2">
 <h2>Other geoms</h2>
+<p>We can transform our bar graph into a line graph, but instead of <code>Year_chr</code>, use <code>Year_dt</code>. The datatype of the variable can influence what geoms can be used and how it is displayed on the axis.</p>
+<pre class="r"><code># Use Year_dt, a date datatype, to plot a line graph 
+l &lt;- ggplot(data = df1, aes(x = Year_dt, y = Estimate, color = County))
+
+l +
+  geom_line()
+
+# add points to disinguish the intermediate years
+l +
+  geom_line() +
+  geom_point()</code></pre>
+<p>Note that initializing ggplot this time was slightly different than before. The <code>ggplot()</code> function can also take data and aesthetic arguments. The difference is that arguments in <code>ggplot()</code> are global and will trickle down to the geoms. You won’t have to copy the same arguments for each geom.</p>
 </div>
 <div id="facets" class="section level2">
 <h2>Facets</h2>

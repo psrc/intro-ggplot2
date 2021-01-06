@@ -53,7 +53,9 @@ library(extrafont) # optional
 
 You can replace the path below to where you've stored the data. Use forward slashes `/` or double back slashes `\\`
 ```{r}
-df <- read.xlsx("T:/2020December/christy/ofm_april1_population_final_tidied.xlsx", detectDates = TRUE)
+setwd("C:/Users/clam/Documents/github/intro-ggplot2/data")
+
+df <- read.xlsx("ofm_april1_population_final_tidied.xlsx", detectDates = TRUE)
 ```
 
 ## Bar Graph
@@ -220,16 +222,28 @@ g +
 # set your ggplot and everything that's chained to it to a variable
 my.plot <- g + <other stuff>
 
-ggsave("T:/2020December/christy/my_plot.jpg", plot = my.plot)
+ggsave("my_plot.jpg", plot = my.plot)
 ```
 
 ## Other geoms
 
-```{r}
+We can transform our bar graph into a line graph, but instead of `Year_chr`, use `Year_dt`. The datatype of the variable can influence what geoms can be used and how it is displayed on the axis.
 
+```{r line graph}
+# Use Year_dt, a date datatype, to plot a line graph 
+l <- ggplot(data = df1, aes(x = Year_dt, y = Estimate, color = County))
+
+l +
+  geom_line()
+
+# add points to disinguish the intermediate years
+l +
+  geom_line() +
+  geom_point()
 
 ```
 
+Note that initializing ggplot this time was slightly different than before. The `ggplot()` function can also take data and aesthetic arguments. The difference is that arguments in `ggplot()` are global and will trickle down to the geoms. You won't have to copy the same arguments for each geom.
 
 ## Facets
 
