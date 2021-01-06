@@ -53,7 +53,7 @@ library(extrafont) # optional
 
 You can replace the path below to where you've stored the data. Use forward slashes `/` or double back slashes `\\`
 ```{r}
-df <- read.xlsx("T:/2020December/christy/ofm_april1_population_final_tidied.xlsx", detectDates = T)
+df <- read.xlsx("T:/2020December/christy/ofm_april1_population_final_tidied.xlsx", detectDates = TRUE)
 ```
 
 ## Bar Graph
@@ -63,47 +63,173 @@ To create a simple bar graph, we'll use a subset of the the data. Query for only
 df1 <- df[df$Filter == 1, ]
 ```
 
-Initiate ggplot
+### Initiate ggplot
 ```{r}
 g <- ggplot()
 ```
 
+### Geoms
 
-Chain information! Below is a rough template of what we may or may not use to build our bar graph (subject to change!). We'll go through piece-by-piece to see each function's effect. 
+Geoms are geometric objects drawn to represent data such as lines, bars, and points[^1]. Within the geom function is a place to assign aesthetics `aes()`. `aes()` takes a handful of arguments and it will vary across geoms. Use the console to look up help on `geom_col()` and find its aesthetics.
+
+[^1]: Data Source: R Graphics Cookbook, pg 409
+
 ```{r}
-my.pal <- c('#f6eff7','#bdc9e1','#67a9cf','#02818a') # a custom color palette
-
+# adding a geom and using aesthetics
 g +
-  geom_col(data = , 
-           aes(x = , y = ),
-           position = 
-  ) +
-  scale_fill_brewer(palette = ) +
-  scale_fill_manual(values = ) +
-  scale_x_discrete(breaks = , labels = ) +
-  scale_y_continuous(labels = ) +
-  labs(x = , y = , title = , subtitle = , caption = ) +
-  theme(axis.text.x = element_text(angle = , 
-                                   hjust = , 
-                                   vjust = ,
-                                   family =
-                                   ),
-        axis.title.x = element_text(hjust = ),
-        axis.title.y = element_text(hjust = ),
-        axis.line = element_line(color = , size = , lineend = ),
-        axis.ticks = element_blank(),
-        legend.position = ,
-        text = element_text(family = )
-        )
+  geom_col(data = df1, 
+           aes(x = Year_chr, y = Estimate, fill = County),
+           color = "black",
+           alpha = .5,
+           position = "stack"
+           )
 ```
 
-Save the plot as a bitmap output file (e.g. .jpg)
+### Scales
+
+Scales control the mapping from the values of the data space to the values of the aesthetic space[^2]. When we map a variable, default settings are used. To change the default and customize those aesthetics, apply a scale function. 
+
+[^2]: Data Source: R Graphics Cookbook, pg 409
+
+Most follow the format: `scale_{aesthetic}_{method}` or `scale_{aesthetic}_{datatype}` 
+
+```{r}
+# Using brewers to change the color palette
+
+g +
+  geom_col(data = df1, 
+           aes(x = Year_chr, y = Estimate, fill = County),
+           color = "black",
+           alpha = .5,
+           position = "stack"
+  ) +
+  scale_fill_brewer(palette = "Accent")
+```
+
+```{r}
+# Creating and using a custom color palette
+
+my.pal <- c('#f6eff7','#bdc9e1','#67a9cf','#02818a')
+
+g +
+  geom_col(data = df1, 
+           aes(x = Year_chr, y = Estimate, fill = County),
+           color = "black",
+           alpha = .5,
+           position = "stack"
+  ) +
+  scale_fill_manual(values = my.pal)
+```
+
+```{r}
+# Formatting the axis scales
+
+g +
+  geom_col(data = df1, 
+           aes(x = Year_chr, y = Estimate, fill = County),
+           color = "black",
+           alpha = .5,
+           position = "stack"
+  ) +
+  scale_fill_manual(values = my.pal) +
+  scale_y_continuous(labels = label_comma())
+```
+
+```{r}
+# Setting breaks and new labels for axis
+g +
+  geom_col(data = df1, 
+           aes(x = Year_chr, y = Estimate, fill = County),
+           color = "black",
+           alpha = .5,
+           position = "stack"
+  ) +
+  scale_fill_manual(values = my.pal) +  
+  scale_y_continuous(labels = c("None", "A lot"),
+                     breaks = c(0, 4e+06)) +
+  scale_x_discrete(labels = c(2010:2019, "Worst Year Ever"))
+```
+
+### Theme
+
+The theme function controls the non-data part of your plot such as titles, labels, fonts, background, gridlines, and legends. Depending on what you’re changing, you’ll have to wrap your specs with one of the following functions: 
+
+  - `element_line()`: modify the line elements of the theme
+  - `element_text()`: to modify the text elements
+  - `element_rect()`: to modify the rectangle elements
+  - `element_blank()`: to remove the element
+
+```{r}
+# Changing the non-data part  
+g +
+  geom_col(data = df1, 
+           aes(x = Year_chr, y = Estimate, fill = County),
+           color = "black",
+           alpha = .5,
+           position = "stack"
+  ) +
+  scale_fill_manual(values = my.pal) +
+  scale_y_continuous(labels = c("None", "A lot"),
+                     breaks = c(0, 4e+06)) +
+  scale_x_discrete(labels = c(2010:2019, "Worst Year Ever")) +  
+  theme(axis.text.x = element_text(angle = 45, 
+                                   hjust =  1, 
+                                   vjust = 1, 
+                                   family = "Comic Sans MS", 
+                                   size = 8),
+        axis.ticks.x = element_blank(),
+        legend.position = c(.5, .5),
+        text = element_text(family = "Comic Sans MS")) 
+```
+
+### Labs
+
+An easy way to include plot titles, change axis labels, or legend titles is to use the labs function.
+
+```{r}
+# Labels
+g +
+  geom_col(data = df1, 
+           aes(x = Year_chr, y = Estimate, fill = County),
+           color = "black",
+           alpha = .5,
+           position = "stack"
+  ) +
+  scale_fill_manual(values = my.pal) +
+  scale_y_continuous(labels = c("None", "A lot"),
+                     breaks = c(0, 4e+06)) +
+  scale_x_discrete(labels = c(2010:2019, "Worst Year Ever")) +  
+  theme(axis.text.x = element_text(angle = 45, 
+                                   hjust =  1, 
+                                   vjust = 1, 
+                                   family = "Comic Sans MS", 
+                                   size = 8),
+        axis.ticks.x = element_blank(),
+        legend.position = c(.5, .5),
+        text = element_text(family = "Comic Sans MS")) +
+  labs(title = "My Plot", 
+       x = "Year", 
+       y = NULL, 
+       caption = "footnote", 
+       subtitle = "My subtitle")
+```
+
+
+### Save the plot as a bitmap output file (e.g. .jpg)
 ```{r}
 # set your ggplot and everything that's chained to it to a variable
 my.plot <- g + <other stuff>
 
 ggsave("T:/2020December/christy/my_plot.jpg", plot = my.plot)
 ```
+
+## Other geoms
+
+```{r}
+
+
+```
+
 
 ## Facets
 

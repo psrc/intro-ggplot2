@@ -1570,44 +1570,147 @@ library(ggplot2)
 library(scales)
 library(extrafont) # optional</code></pre>
 <p>You can replace the path below to where you’ve stored the data. Use forward slashes <code>/</code> or double back slashes <code>\\</code></p>
-<pre class="r"><code>df &lt;- read.xlsx(&quot;T:/2020December/christy/ofm_april1_population_final_tidied.xlsx&quot;, detectDates = T)</code></pre>
+<pre class="r"><code>df &lt;- read.xlsx(&quot;T:/2020December/christy/ofm_april1_population_final_tidied.xlsx&quot;, detectDates = TRUE)</code></pre>
 </div>
 <div id="bar-graph" class="section level2">
 <h2>Bar Graph</h2>
 <p>To create a simple bar graph, we’ll use a subset of the the data. Query for only total county estimates (where column <code>Filter</code> equals 1)</p>
 <pre class="r"><code>df1 &lt;- df[df$Filter == 1, ]</code></pre>
-<p>Initiate ggplot</p>
+<div id="initiate-ggplot" class="section level3">
+<h3>Initiate ggplot</h3>
 <pre class="r"><code>g &lt;- ggplot()</code></pre>
-<p>Chain information! Below is a rough template of what we may or may not use to build our bar graph (subject to change!). We’ll go through piece-by-piece to see each function’s effect.</p>
-<pre class="r"><code>my.pal &lt;- c(&#39;#f6eff7&#39;,&#39;#bdc9e1&#39;,&#39;#67a9cf&#39;,&#39;#02818a&#39;) # a custom color palette
+</div>
+<div id="geoms" class="section level3">
+<h3>Geoms</h3>
+<p>Geoms are geometric objects drawn to represent data such as lines, bars, and points<a href="#fn1" class="footnote-ref" id="fnref1"><sup>1</sup></a>. Within the geom function is a place to assign aesthetics <code>aes()</code>. <code>aes()</code> takes a handful of arguments and it will vary across geoms. Use the console to look up help on <code>geom_col()</code> and find its aesthetics.</p>
+<pre class="r"><code># adding a geom and using aesthetics
+g +
+  geom_col(data = df1, 
+           aes(x = Year_chr, y = Estimate, fill = County),
+           color = &quot;black&quot;,
+           alpha = .5,
+           position = &quot;stack&quot;
+           )</code></pre>
+</div>
+<div id="scales" class="section level3">
+<h3>Scales</h3>
+<p>Scales control the mapping from the values of the data space to the values of the aesthetic space<a href="#fn2" class="footnote-ref" id="fnref2"><sup>2</sup></a>. When we map a variable, default settings are used. To change the default and customize those aesthetics, apply a scale function.</p>
+<p>Most follow the format: <code>scale_{aesthetic}_{method}</code> or <code>scale_{aesthetic}_{datatype}</code></p>
+<pre class="r"><code># Using brewers to change the color palette
 
 g +
-  geom_col(data = , 
-           aes(x = , y = ),
-           position = 
+  geom_col(data = df1, 
+           aes(x = Year_chr, y = Estimate, fill = County),
+           color = &quot;black&quot;,
+           alpha = .5,
+           position = &quot;stack&quot;
   ) +
-  scale_fill_brewer(palette = ) +
-  scale_fill_manual(values = ) +
-  scale_x_discrete(breaks = , labels = ) +
-  scale_y_continuous(labels = ) +
-  labs(x = , y = , title = , subtitle = , caption = ) +
-  theme(axis.text.x = element_text(angle = , 
-                                   hjust = , 
-                                   vjust = ,
-                                   family =
-                                   ),
-        axis.title.x = element_text(hjust = ),
-        axis.title.y = element_text(hjust = ),
-        axis.line = element_line(color = , size = , lineend = ),
-        axis.ticks = element_blank(),
-        legend.position = ,
-        text = element_text(family = )
-        )</code></pre>
-<p>Save the plot as a bitmap output file (e.g. .jpg)</p>
+  scale_fill_brewer(palette = &quot;Accent&quot;)</code></pre>
+<pre class="r"><code># Creating and using a custom color palette
+
+my.pal &lt;- c(&#39;#f6eff7&#39;,&#39;#bdc9e1&#39;,&#39;#67a9cf&#39;,&#39;#02818a&#39;)
+
+g +
+  geom_col(data = df1, 
+           aes(x = Year_chr, y = Estimate, fill = County),
+           color = &quot;black&quot;,
+           alpha = .5,
+           position = &quot;stack&quot;
+  ) +
+  scale_fill_manual(values = my.pal)</code></pre>
+<pre class="r"><code># Formatting the axis scales
+
+g +
+  geom_col(data = df1, 
+           aes(x = Year_chr, y = Estimate, fill = County),
+           color = &quot;black&quot;,
+           alpha = .5,
+           position = &quot;stack&quot;
+  ) +
+  scale_fill_manual(values = my.pal) +
+  scale_y_continuous(labels = label_comma())</code></pre>
+<pre class="r"><code># Setting breaks and new labels for axis
+g +
+  geom_col(data = df1, 
+           aes(x = Year_chr, y = Estimate, fill = County),
+           color = &quot;black&quot;,
+           alpha = .5,
+           position = &quot;stack&quot;
+  ) +
+  scale_fill_manual(values = my.pal) +  
+  scale_y_continuous(labels = c(&quot;None&quot;, &quot;A lot&quot;),
+                     breaks = c(0, 4e+06)) +
+  scale_x_discrete(labels = c(2010:2019, &quot;Worst Year Ever&quot;))</code></pre>
+</div>
+<div id="theme" class="section level3">
+<h3>Theme</h3>
+<p>The theme function controls the non-data part of your plot such as titles, labels, fonts, background, gridlines, and legends. Depending on what you’re changing, you’ll have to wrap your specs with one of the following functions:</p>
+<ul>
+<li><code>element_line()</code>: modify the line elements of the theme</li>
+<li><code>element_text()</code>: to modify the text elements</li>
+<li><code>element_rect()</code>: to modify the rectangle elements</li>
+<li><code>element_blank()</code>: to remove the element</li>
+</ul>
+<pre class="r"><code># Changing the non-data part  
+g +
+  geom_col(data = df1, 
+           aes(x = Year_chr, y = Estimate, fill = County),
+           color = &quot;black&quot;,
+           alpha = .5,
+           position = &quot;stack&quot;
+  ) +
+  scale_fill_manual(values = my.pal) +
+  scale_y_continuous(labels = c(&quot;None&quot;, &quot;A lot&quot;),
+                     breaks = c(0, 4e+06)) +
+  scale_x_discrete(labels = c(2010:2019, &quot;Worst Year Ever&quot;)) +  
+  theme(axis.text.x = element_text(angle = 45, 
+                                   hjust =  1, 
+                                   vjust = 1, 
+                                   family = &quot;Comic Sans MS&quot;, 
+                                   size = 8),
+        axis.ticks.x = element_blank(),
+        legend.position = c(.5, .5),
+        text = element_text(family = &quot;Comic Sans MS&quot;)) </code></pre>
+</div>
+<div id="labs" class="section level3">
+<h3>Labs</h3>
+<p>An easy way to include plot titles, change axis labels, or legend titles is to use the labs function.</p>
+<pre class="r"><code># Labels
+g +
+  geom_col(data = df1, 
+           aes(x = Year_chr, y = Estimate, fill = County),
+           color = &quot;black&quot;,
+           alpha = .5,
+           position = &quot;stack&quot;
+  ) +
+  scale_fill_manual(values = my.pal) +
+  scale_y_continuous(labels = c(&quot;None&quot;, &quot;A lot&quot;),
+                     breaks = c(0, 4e+06)) +
+  scale_x_discrete(labels = c(2010:2019, &quot;Worst Year Ever&quot;)) +  
+  theme(axis.text.x = element_text(angle = 45, 
+                                   hjust =  1, 
+                                   vjust = 1, 
+                                   family = &quot;Comic Sans MS&quot;, 
+                                   size = 8),
+        axis.ticks.x = element_blank(),
+        legend.position = c(.5, .5),
+        text = element_text(family = &quot;Comic Sans MS&quot;)) +
+  labs(title = &quot;My Plot&quot;, 
+       x = &quot;Year&quot;, 
+       y = NULL, 
+       caption = &quot;footnote&quot;, 
+       subtitle = &quot;My subtitle&quot;)</code></pre>
+</div>
+<div id="save-the-plot-as-a-bitmap-output-file-e.g.-.jpg" class="section level3">
+<h3>Save the plot as a bitmap output file (e.g. .jpg)</h3>
 <pre class="r"><code># set your ggplot and everything that&#39;s chained to it to a variable
 my.plot &lt;- g + &lt;other stuff&gt;
 
 ggsave(&quot;T:/2020December/christy/my_plot.jpg&quot;, plot = my.plot)</code></pre>
+</div>
+</div>
+<div id="other-geoms" class="section level2">
+<h2>Other geoms</h2>
 </div>
 <div id="facets" class="section level2">
 <h2>Facets</h2>
@@ -1660,6 +1763,13 @@ saveWidget(p1, file=&quot;T:/2020December/christy/my_plot.html&quot;)  </code></
 <p>Sometimes ggplot2 on its own can only do so much. Where there is a gap, R users have built on top of ggplot2 and created their own libraries to enhance ggplot2 graphs either with animation, better fitted labeling, or specialty geoms to name a few. You can check out the ggplot2 extension gallery here:</p>
 <p><a href="https://exts.ggplot2.tidyverse.org/gallery/">https://exts.ggplot2.tidyverse.org/gallery/</a></p>
 </div>
+</div>
+<div class="footnotes">
+<hr />
+<ol>
+<li id="fn1"><p>Data Source: R Graphics Cookbook, pg 409<a href="#fnref1" class="footnote-back">↩︎</a></p></li>
+<li id="fn2"><p>Data Source: R Graphics Cookbook, pg 409<a href="#fnref2" class="footnote-back">↩︎</a></p></li>
+</ol>
 </div>
 
 
