@@ -1714,6 +1714,8 @@ ggsave(&quot;my_plot.jpg&quot;, plot = my.plot)</code></pre>
 <div id="other-geoms" class="section level2">
 <h2>Other geoms</h2>
 <p>We can transform our bar graph into a line graph, but instead of <code>Year_chr</code>, use <code>Year_dt</code>. The datatype of the variable can influence what geoms can be used and how it is displayed on the axis.</p>
+<div id="lines-and-points" class="section level4">
+<h4>Lines and Points</h4>
 <pre class="r"><code># Use Year_dt, a date datatype, to plot a line graph 
 l &lt;- ggplot(data = df1, aes(x = Year_dt, y = Estimate, color = County))
 
@@ -1726,29 +1728,76 @@ l +
   geom_point()</code></pre>
 <p>Note that initializing ggplot this time was slightly different than before. The <code>ggplot()</code> function can also take data and aesthetic arguments. The difference is that arguments in <code>ggplot()</code> are global and will trickle down to the geoms. You won’t have to copy the same arguments for each geom.</p>
 </div>
+<div id="bar-and-line" class="section level4">
+<h4>Bar and Line</h4>
+<pre class="r"><code># Create a data frame of regional totals by year
+# Add a new column &#39;Region&#39; for labeling purposes
+reg.tot &lt;- aggregate(x = df1[&#39;Estimate&#39;], by = df1[&#39;Year_dt&#39;], FUN = sum)
+reg.tot$Region &lt;- &quot;Region&quot;
+
+g +
+  geom_col(data = df1, 
+           aes(x = Year_dt, y = Estimate, fill = County), 
+           position = &#39;dodge&#39;) +
+  geom_line(data = reg.tot, 
+            aes(x = Year_dt, y = Estimate))
+
+# add the regional line to the legend
+g +
+  geom_col(data = df1, 
+           aes(x = Year_dt, y = Estimate, fill = County), 
+           position = &#39;dodge&#39;) +
+  geom_line(data = reg.tot, 
+            aes(x = Year_dt, y = Estimate, color = Region)) +
+  scale_color_manual(name = NULL, 
+                     values = c(&#39;Region&#39; = &#39;black&#39;))</code></pre>
+</div>
+</div>
 <div id="facets" class="section level2">
 <h2>Facets</h2>
 <p>Also known as Trellis displays, facets are an easy way to display groups of data alongside each other.</p>
 <div id="facet-wrap" class="section level3">
 <h3>Facet Wrap</h3>
 <p>You can use <code>facet_wrap()</code> if you want your subplots laid out horizonally and wrapped around. Put your variable(s) within <code>vars()</code>. <code>vars()</code> like the <code>aes()</code> checks to see what the unique values of your variable(s) are and allows <code>facet_</code> to do what it needs to do to subplot.</p>
-<pre class="r"><code>g +
-  geom_col(data = df1, 
-           aes(x = , y = )
-           ) +
-  facet_wrap(vars(), ncol = , scales = )</code></pre>
+<pre class="r"><code># facet wrap
+l +
+  geom_line() +
+  geom_point() +
+  facet_wrap(vars(County), ncol = 2) +
+  theme(legend.position = &quot;none&quot;) # the legend may be redundant, let&#39;s turn it off</code></pre>
 <p>*For longtime users of ggplot2, you may have used the <code>~</code> notation in <code>facet_</code> functions. You’ve probably seen the <code>~</code> used in books or stack overflow answers. You can still get away with using <code>~</code> but it has been soft-deprecated and superceded with <code>vars()</code> like in the examples shown.</p>
 </div>
 <div id="facet-grid" class="section level3">
 <h3>Facet Grid</h3>
 <p>Use <code>facet_grid()</code> when you want to split by at least two variables that generate vertical and horizontal panels.</p>
-<p>Let’s create a facet grid where vertical panels are based on Filter values (Total County, Unincorporated County, and Incorporated County jurisdiction) and horizontal panels based on Counties. Query <code>df</code> for all records except for individual cities and towns.</p>
-<pre class="r"><code>df2 &lt;- df[df$Filter != 4, ]</code></pre>
-<pre class="r"><code>g +
-  geom_col(data = df2, 
-           aes(x = , y = )
-  ) +
-  facet_grid(rows = vars(), cols = vars()) </code></pre>
+<p>Let’s create a facet grid where vertical panels are based on Filter values (where 1 = Total County, 2 = Unincorporated County, and 3 = Incorporated County estimates) and horizontal panels based on Counties. Query <code>df</code> for all records except for individual cities and towns.</p>
+<pre class="r"><code>df2 &lt;- df[df$Filter != 4, ]
+
+ggplot(df2, aes(x = Year_dt, y = Estimate)) +
+  geom_col() +
+  facet_grid(rows = vars(County), cols = vars(Filter))  </code></pre>
+<div id="factors" class="section level4">
+<h4>Factors</h4>
+<p>There are several ways of changing the labels of facet panels. One is by using a column that is a factor data type.</p>
+<p>Factors are used to work with categorical variables, variables that have a fixed and known set of possible values<a href="#fn3" class="footnote-ref" id="fnref3"><sup>3</sup></a>. The advantage of factors is that you can set an order to values and sort in non-alphabetical order.</p>
+<p>Factor variables can be used for any aesthetic mapping, not just facet panels!</p>
+<pre class="r"><code># Create Factor column
+df2$Filter_name &lt;- factor(df2$Filter, 
+                          levels = c(&quot;1&quot;, &quot;2&quot;, &quot;3&quot;), 
+                          labels = c( &quot;Total&quot;,&quot;Unincorporated&quot;,&quot;Incorporated&quot;))
+
+ggplot(df2, aes(x = Year_dt, y = Estimate)) +
+  geom_col() +
+  facet_grid(rows = vars(County), cols = vars(Filter_name))</code></pre>
+<pre class="r"><code># Change order of grid columns by changing the levels and labels
+df2$Filter_name &lt;- factor(df2$Filter, 
+                          levels = c(&quot;1&quot;, &quot;3&quot;, &quot;2&quot;), 
+                          labels = c( &quot;Total&quot;,&quot;Incorporated&quot;, &quot;Unincorporated&quot;))
+
+ggplot(df2, aes(x = Year_dt, y = Estimate)) +
+  geom_col() +
+  facet_grid(rows = vars(County), cols = vars(Filter_name))</code></pre>
+</div>
 </div>
 </div>
 </div>
@@ -1763,14 +1812,14 @@ library(plotly)
 library(htmlwidgets)</code></pre>
 <p>Just use Plotly’s <code>ggplotly()</code> around your ggplot object to integrate ggplot2 with Plotly.</p>
 <pre class="r"><code>p &lt;- g +
-  geom_col(data = , 
-           aes(x = , y = , fill = )
+  geom_col(data = df2, 
+           aes(x = Year_chr, Estimate, fill = County)
   )
 
 p1 &lt;- ggplotly(p)
 
 # when saving a ggplotly or plotly object to disk, use a .html extension
-saveWidget(p1, file=&quot;T:/2020December/christy/my_plot.html&quot;)  </code></pre>
+saveWidget(p1, file=&quot;my_plot.html&quot;)  </code></pre>
 </div>
 <div id="others" class="section level2">
 <h2>Others</h2>
@@ -1781,8 +1830,9 @@ saveWidget(p1, file=&quot;T:/2020December/christy/my_plot.html&quot;)  </code></
 <div class="footnotes">
 <hr />
 <ol>
-<li id="fn1"><p>Data Source: R Graphics Cookbook, pg 409<a href="#fnref1" class="footnote-back">↩︎</a></p></li>
-<li id="fn2"><p>Data Source: R Graphics Cookbook, pg 409<a href="#fnref2" class="footnote-back">↩︎</a></p></li>
+<li id="fn1"><p>R Graphics Cookbook, pg 409<a href="#fnref1" class="footnote-back">↩︎</a></p></li>
+<li id="fn2"><p>R Graphics Cookbook, pg 409<a href="#fnref2" class="footnote-back">↩︎</a></p></li>
+<li id="fn3"><p>R for Data Science, <a href="https://r4ds.had.co.nz/factors.html" class="uri">https://r4ds.had.co.nz/factors.html</a><a href="#fnref3" class="footnote-back">↩︎</a></p></li>
 </ol>
 </div>
 
@@ -1832,7 +1882,7 @@ $(document).ready(function ()  {
 
     // establish options
     var options = {
-      selectors: "h1,h2,h3",
+      selectors: "h1,h2,h3,h4,h5",
       theme: "bootstrap3",
       context: '.toc-content',
       hashGenerator: function (text) {
