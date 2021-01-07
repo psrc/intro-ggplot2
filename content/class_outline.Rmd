@@ -98,7 +98,6 @@ Most follow the format: `scale_{aesthetic}_{method}` or `scale_{aesthetic}_{data
 
 ```{r}
 # Using brewers to change the color palette
-
 g +
   geom_col(data = df1, 
            aes(x = Year_chr, y = Estimate, fill = County),
@@ -111,7 +110,6 @@ g +
 
 ```{r}
 # Creating and using a custom color palette
-
 my.pal <- c('#f6eff7','#bdc9e1','#67a9cf','#02818a')
 
 g +
@@ -126,7 +124,6 @@ g +
 
 ```{r}
 # Formatting the axis scales
-
 g +
   geom_col(data = df1, 
            aes(x = Year_chr, y = Estimate, fill = County),
@@ -153,9 +150,35 @@ g +
   scale_x_discrete(labels = c(2010:2019, "Worst Year Ever"))
 ```
 
+### Labs
+
+An easy way to include plot titles, change axis labels, or legend titles is to use the labs function.
+
+```{r}
+# Labels
+g +
+  geom_col(data = df1, 
+           aes(x = Year_chr, y = Estimate, fill = County),
+           color = "black",
+           alpha = .5,
+           position = "stack"
+  ) +
+  scale_fill_manual(values = my.pal) +
+  scale_y_continuous(labels = c("None", "A lot"),
+                     breaks = c(0, 4e+06)) +
+  scale_x_discrete(labels = c(2010:2019, "Worst Year Ever")) +  
+  labs(title = "My Plot", 
+       x = "Year", 
+       y = NULL, 
+       caption = "footnote", 
+       subtitle = "My subtitle")
+```
+
 ### Theme
 
-The theme function controls the non-data part of your plot such as titles, labels, fonts, background, gridlines, and legends. Depending on what you’re changing, you’ll have to wrap your specs with one of the following functions: 
+The theme function controls the non-data part of your plot such as titles, labels, fonts, background, gridlines, and legends. There are a ton of keyword arguments you could use in `theme()`: [https://ggplot2.tidyverse.org/reference/theme.html](https://ggplot2.tidyverse.org/reference/theme.html)
+
+Depending on what you’re changing, you’ll have to wrap your specs with one of the following functions: 
 
   - `element_line()`: modify the line elements of the theme
   - `element_text()`: to modify the text elements
@@ -175,48 +198,27 @@ g +
   scale_y_continuous(labels = c("None", "A lot"),
                      breaks = c(0, 4e+06)) +
   scale_x_discrete(labels = c(2010:2019, "Worst Year Ever")) +  
-  theme(axis.text.x = element_text(angle = 45, 
-                                   hjust =  1, 
-                                   vjust = 1, 
-                                   family = "Comic Sans MS", 
-                                   size = 8),
-        axis.ticks.x = element_blank(),
-        legend.position = c(.5, .5),
-        text = element_text(family = "Comic Sans MS")) 
-```
-
-### Labs
-
-An easy way to include plot titles, change axis labels, or legend titles is to use the labs function.
-
-```{r}
-# Labels
-g +
-  geom_col(data = df1, 
-           aes(x = Year_chr, y = Estimate, fill = County),
-           color = "black",
-           alpha = .5,
-           position = "stack"
-  ) +
-  scale_fill_manual(values = my.pal) +
-  scale_y_continuous(labels = c("None", "A lot"),
-                     breaks = c(0, 4e+06)) +
-  scale_x_discrete(labels = c(2010:2019, "Worst Year Ever")) +  
-  theme(axis.text.x = element_text(angle = 45, 
-                                   hjust =  1, 
-                                   vjust = 1, 
-                                   family = "Comic Sans MS", 
-                                   size = 8),
-        axis.ticks.x = element_blank(),
-        legend.position = c(.5, .5),
-        text = element_text(family = "Comic Sans MS")) +
   labs(title = "My Plot", 
-       x = "Year", 
-       y = NULL, 
-       caption = "footnote", 
-       subtitle = "My subtitle")
+     x = "Year", 
+     y = NULL, 
+     caption = "footnote", 
+     subtitle = "My subtitle") +
+  theme(plot.title = element_text(size = 10, face = 'bold'),
+        axis.text.x = element_text(angle = 45,
+                                   hjust = 1, 
+                                   vjust = 1, 
+                                   family = 'Comic Sans MS'),
+        axis.ticks.x = element_blank(),
+        legend.position = c(.5, .5),
+        text = element_text(family = "Segoe UI")) 
 ```
 
+If customizing the non-data elements is too much work, you can opt for some preset themes:
+
+- `theme_bw()`
+- `theme_minimal()`
+- `theme_classic()`
+- `theme_dark()`
 
 ### Save the plot as a bitmap output file (e.g. .jpg)
 ```{r}

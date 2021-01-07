@@ -1599,7 +1599,6 @@ g +
 <p>Scales control the mapping from the values of the data space to the values of the aesthetic space<a href="#fn2" class="footnote-ref" id="fnref2"><sup>2</sup></a>. When we map a variable, default settings are used. To change the default and customize those aesthetics, apply a scale function.</p>
 <p>Most follow the format: <code>scale_{aesthetic}_{method}</code> or <code>scale_{aesthetic}_{datatype}</code></p>
 <pre class="r"><code># Using brewers to change the color palette
-
 g +
   geom_col(data = df1, 
            aes(x = Year_chr, y = Estimate, fill = County),
@@ -1609,7 +1608,6 @@ g +
   ) +
   scale_fill_brewer(palette = &quot;Accent&quot;)</code></pre>
 <pre class="r"><code># Creating and using a custom color palette
-
 my.pal &lt;- c(&#39;#f6eff7&#39;,&#39;#bdc9e1&#39;,&#39;#67a9cf&#39;,&#39;#02818a&#39;)
 
 g +
@@ -1621,7 +1619,6 @@ g +
   ) +
   scale_fill_manual(values = my.pal)</code></pre>
 <pre class="r"><code># Formatting the axis scales
-
 g +
   geom_col(data = df1, 
            aes(x = Year_chr, y = Estimate, fill = County),
@@ -1644,9 +1641,31 @@ g +
                      breaks = c(0, 4e+06)) +
   scale_x_discrete(labels = c(2010:2019, &quot;Worst Year Ever&quot;))</code></pre>
 </div>
+<div id="labs" class="section level3">
+<h3>Labs</h3>
+<p>An easy way to include plot titles, change axis labels, or legend titles is to use the labs function.</p>
+<pre class="r"><code># Labels
+g +
+  geom_col(data = df1, 
+           aes(x = Year_chr, y = Estimate, fill = County),
+           color = &quot;black&quot;,
+           alpha = .5,
+           position = &quot;stack&quot;
+  ) +
+  scale_fill_manual(values = my.pal) +
+  scale_y_continuous(labels = c(&quot;None&quot;, &quot;A lot&quot;),
+                     breaks = c(0, 4e+06)) +
+  scale_x_discrete(labels = c(2010:2019, &quot;Worst Year Ever&quot;)) +  
+  labs(title = &quot;My Plot&quot;, 
+       x = &quot;Year&quot;, 
+       y = NULL, 
+       caption = &quot;footnote&quot;, 
+       subtitle = &quot;My subtitle&quot;)</code></pre>
+</div>
 <div id="theme" class="section level3">
 <h3>Theme</h3>
-<p>The theme function controls the non-data part of your plot such as titles, labels, fonts, background, gridlines, and legends. Depending on what you’re changing, you’ll have to wrap your specs with one of the following functions:</p>
+<p>The theme function controls the non-data part of your plot such as titles, labels, fonts, background, gridlines, and legends. There are a ton of keyword arguments you could use in <code>theme()</code>: <a href="https://ggplot2.tidyverse.org/reference/theme.html">https://ggplot2.tidyverse.org/reference/theme.html</a></p>
+<p>Depending on what you’re changing, you’ll have to wrap your specs with one of the following functions:</p>
 <ul>
 <li><code>element_line()</code>: modify the line elements of the theme</li>
 <li><code>element_text()</code>: to modify the text elements</li>
@@ -1665,43 +1684,26 @@ g +
   scale_y_continuous(labels = c(&quot;None&quot;, &quot;A lot&quot;),
                      breaks = c(0, 4e+06)) +
   scale_x_discrete(labels = c(2010:2019, &quot;Worst Year Ever&quot;)) +  
-  theme(axis.text.x = element_text(angle = 45, 
-                                   hjust =  1, 
-                                   vjust = 1, 
-                                   family = &quot;Comic Sans MS&quot;, 
-                                   size = 8),
-        axis.ticks.x = element_blank(),
-        legend.position = c(.5, .5),
-        text = element_text(family = &quot;Comic Sans MS&quot;)) </code></pre>
-</div>
-<div id="labs" class="section level3">
-<h3>Labs</h3>
-<p>An easy way to include plot titles, change axis labels, or legend titles is to use the labs function.</p>
-<pre class="r"><code># Labels
-g +
-  geom_col(data = df1, 
-           aes(x = Year_chr, y = Estimate, fill = County),
-           color = &quot;black&quot;,
-           alpha = .5,
-           position = &quot;stack&quot;
-  ) +
-  scale_fill_manual(values = my.pal) +
-  scale_y_continuous(labels = c(&quot;None&quot;, &quot;A lot&quot;),
-                     breaks = c(0, 4e+06)) +
-  scale_x_discrete(labels = c(2010:2019, &quot;Worst Year Ever&quot;)) +  
-  theme(axis.text.x = element_text(angle = 45, 
-                                   hjust =  1, 
-                                   vjust = 1, 
-                                   family = &quot;Comic Sans MS&quot;, 
-                                   size = 8),
-        axis.ticks.x = element_blank(),
-        legend.position = c(.5, .5),
-        text = element_text(family = &quot;Comic Sans MS&quot;)) +
   labs(title = &quot;My Plot&quot;, 
-       x = &quot;Year&quot;, 
-       y = NULL, 
-       caption = &quot;footnote&quot;, 
-       subtitle = &quot;My subtitle&quot;)</code></pre>
+     x = &quot;Year&quot;, 
+     y = NULL, 
+     caption = &quot;footnote&quot;, 
+     subtitle = &quot;My subtitle&quot;) +
+  theme(plot.title = element_text(size = 10, face = &#39;bold&#39;),
+        axis.text.x = element_text(angle = 45,
+                                   hjust = 1, 
+                                   vjust = 1, 
+                                   family = &#39;Comic Sans MS&#39;),
+        axis.ticks.x = element_blank(),
+        legend.position = c(.5, .5),
+        text = element_text(family = &quot;Segoe UI&quot;)) </code></pre>
+<p>If customizing the non-data elements is too much work, you can opt for some preset themes:</p>
+<ul>
+<li><code>theme_bw()</code></li>
+<li><code>theme_minimal()</code></li>
+<li><code>theme_classic()</code></li>
+<li><code>theme_dark()</code></li>
+</ul>
 </div>
 <div id="save-the-plot-as-a-bitmap-output-file-e.g.-.jpg" class="section level3">
 <h3>Save the plot as a bitmap output file (e.g. .jpg)</h3>
