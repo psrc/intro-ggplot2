@@ -1558,6 +1558,7 @@ artwork by <span class="citation">@allison_horst</span>
 <li>Comment a line or lines: <code>Ctrl+Shift+C</code></li>
 <li>Toggle cursor between script and console panes: <code>Ctrl+1</code> and <code>Ctrl+2</code></li>
 <li>Create arrow <code>&lt;-</code>: <code>Alt+-</code></li>
+<li>Run Line(s): <code>Ctrl+Enter</code></li>
 </ul>
 <div id="intro-to-ggplot2" class="section level1">
 <h1>Intro to ggplot2</h1>
@@ -1639,7 +1640,7 @@ g +
   scale_fill_manual(values = my.pal) +  
   scale_y_continuous(labels = c(&quot;None&quot;, &quot;A lot&quot;),
                      breaks = c(0, 4e+06)) +
-  scale_x_discrete(labels = c(2010:2019, &quot;Worst Year Ever&quot;))</code></pre>
+  scale_x_discrete(labels = c(&quot;2020&quot; = &quot;Worst Year Ever&quot;))</code></pre>
 </div>
 <div id="labs" class="section level3">
 <h3>Labs</h3>
@@ -1655,7 +1656,7 @@ g +
   scale_fill_manual(values = my.pal) +
   scale_y_continuous(labels = c(&quot;None&quot;, &quot;A lot&quot;),
                      breaks = c(0, 4e+06)) +
-  scale_x_discrete(labels = c(2010:2019, &quot;Worst Year Ever&quot;)) +  
+  scale_x_discrete(labels = c(&quot;2020&quot; = &quot;Worst Year Ever&quot;)) +  
   labs(title = &quot;My Plot&quot;, 
        x = &quot;Year&quot;, 
        y = NULL, 
@@ -1683,7 +1684,7 @@ g +
   scale_fill_manual(values = my.pal) +
   scale_y_continuous(labels = c(&quot;None&quot;, &quot;A lot&quot;),
                      breaks = c(0, 4e+06)) +
-  scale_x_discrete(labels = c(2010:2019, &quot;Worst Year Ever&quot;)) +  
+  scale_x_discrete(labels = c(&quot;2020&quot; = &quot;Worst Year Ever&quot;)) +  
   labs(title = &quot;My Plot&quot;, 
      x = &quot;Year&quot;, 
      y = NULL, 
@@ -1695,6 +1696,8 @@ g +
                                    vjust = 1, 
                                    family = &#39;Comic Sans MS&#39;),
         axis.ticks.x = element_blank(),
+        axis.line = element_line(color = &#39;blue&#39;),
+        panel.background = element_rect(fill = &#39;pink&#39;),
         legend.position = c(.5, .5),
         text = element_text(family = &quot;Segoe UI&quot;)) </code></pre>
 <p>If customizing the non-data elements is too much work, you can opt for some preset themes:</p>
@@ -1710,7 +1713,7 @@ g +
 <pre class="r"><code># set your ggplot and everything that&#39;s chained to it to a variable
 my.plot &lt;- g + &lt;other stuff&gt;
 
-ggsave(&quot;my_plot.jpg&quot;, plot = my.plot)</code></pre>
+ggsave(&quot;my_plot.jpg&quot;, plot = my.plot, width = 5, units = &quot;in&quot;)</code></pre>
 </div>
 </div>
 <div id="other-geoms" class="section level2">

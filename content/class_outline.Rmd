@@ -37,6 +37,7 @@ Handy keyboard shortcuts for Windows:
 - Comment a line or lines: `Ctrl+Shift+C`
 - Toggle cursor between script and console panes: `Ctrl+1` and `Ctrl+2`
 - Create arrow `<-`: `Alt+-`
+- Run Line(s): `Ctrl+Enter`
 
 # Intro to ggplot2
 
@@ -147,7 +148,7 @@ g +
   scale_fill_manual(values = my.pal) +  
   scale_y_continuous(labels = c("None", "A lot"),
                      breaks = c(0, 4e+06)) +
-  scale_x_discrete(labels = c(2010:2019, "Worst Year Ever"))
+  scale_x_discrete(labels = c("2020" = "Worst Year Ever"))
 ```
 
 ### Labs
@@ -166,7 +167,7 @@ g +
   scale_fill_manual(values = my.pal) +
   scale_y_continuous(labels = c("None", "A lot"),
                      breaks = c(0, 4e+06)) +
-  scale_x_discrete(labels = c(2010:2019, "Worst Year Ever")) +  
+  scale_x_discrete(labels = c("2020" = "Worst Year Ever")) +  
   labs(title = "My Plot", 
        x = "Year", 
        y = NULL, 
@@ -197,7 +198,7 @@ g +
   scale_fill_manual(values = my.pal) +
   scale_y_continuous(labels = c("None", "A lot"),
                      breaks = c(0, 4e+06)) +
-  scale_x_discrete(labels = c(2010:2019, "Worst Year Ever")) +  
+  scale_x_discrete(labels = c("2020" = "Worst Year Ever")) +  
   labs(title = "My Plot", 
      x = "Year", 
      y = NULL, 
@@ -209,6 +210,8 @@ g +
                                    vjust = 1, 
                                    family = 'Comic Sans MS'),
         axis.ticks.x = element_blank(),
+        axis.line = element_line(color = 'blue'),
+        panel.background = element_rect(fill = 'pink'),
         legend.position = c(.5, .5),
         text = element_text(family = "Segoe UI")) 
 ```
@@ -225,7 +228,7 @@ If customizing the non-data elements is too much work, you can opt for some pres
 # set your ggplot and everything that's chained to it to a variable
 my.plot <- g + <other stuff>
 
-ggsave("my_plot.jpg", plot = my.plot)
+ggsave("my_plot.jpg", plot = my.plot, width = 5, units = "in")
 ```
 
 ## Other geoms
