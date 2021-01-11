@@ -380,6 +380,8 @@ Sometimes ggplot2 on its own can only do so much. Where there is a gap, R users 
 
 # Resources
 
+Below are some my favorite resources for help and inspiration
+
 **The official ggplot2 Cheatsheet:** A two pager with a decent list of geoms available and their aesthetics among other things. A good way to sample what's in ggplot2 without being overwhelmed.  
 
 [https://github.com/rstudio/cheatsheets/blob/master/data-visualization-2.1.pdf
