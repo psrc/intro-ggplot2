@@ -60,6 +60,8 @@ setwd("C:/Users/clam/Documents/github/intro-ggplot2/data")
 df <- read.xlsx("ofm_april1_population_final_tidied.xlsx", detectDates = TRUE)
 ```
 
+Before diving into ggplot2, get to know the data. Use `unique()` and `str()` to explore our columns and data frame.
+
 ## Bar Graph
 
 To create a simple bar graph focused on total population by county and year, we'll use a subset of the the data. Query for only total county estimates (where column `Filter` equals 1)
@@ -397,3 +399,23 @@ Sometimes ggplot2 on its own can only do so much. Where there is a gap, R users 
 [https://learn.datacamp.com/courses/introduction-to-data-visualization-with-ggplot2
 ](https://learn.datacamp.com/courses/introduction-to-data-visualization-with-ggplot2
 )
+
+# Homework
+
+Now that you have a framework for how ggplot2 works, let's practice with [homework](https://psrc.github.io/intro-ggplot2/content/homework.html). The homework is a mix of guided steps and challenges that might not have been covered in the module. 
+
+If you are stumped by a question or task, give yourself 10 minutes to experiment and google for a solution, but after that, please ask for help. We are here for you!
+
+<div class="row">
+<div class="col-md-2">
+</div>
+<div class="col-md-8">
+<img src="C:/Users/clam/Documents/github/intro-ggplot2/images/code_hero.jpg" alt="allison horst image">
+<figcaption style="text-align: center;">artwork by @allison_horst</figcaption>
+</div>
+<div class="col-md-2">
+</div>
+</div>
+
+
+
