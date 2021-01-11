@@ -10,10 +10,13 @@ output:
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 knitr::opts_chunk$set(eval = FALSE)
+library(ggplot2)
+library(openxlsx)
+library(reshape2)
 ```
 Given the following graph:
 
-```{r}
+```{r, eval=TRUE, fig.align='center'}
 title <- 'Fuel Economy of Popular Cars'
 legend.title <- 'Type of Car'
 
@@ -73,21 +76,50 @@ ggplot(df_shapes, aes(0, 0, shape = shape)) +
 
 ***
 
-**Create a bar graph of cities/towns with greatest nominal growth between 2010 and 2020**  
+**Create a bar graph of cities & towns with the greatest nominal growth between 2010 and 2020 like the one below...**
+
+```{r, echo=FALSE, eval=TRUE, fig.align='center'}
+dir <- 'C:/Users/clam/Documents/github/intro-ggplot2/data'
+
+df <- read.xlsx(file.path(dir, "ofm_april1_population_final_tidied.xlsx"), detectDates = T)
+
+df1 <- df[df$Filter == 4 & df$Year_chr %in% c(2010, 2020), ]
+df2 <- dcast(df1, County + Jurisdiction ~ paste0("Year_", Year_chr), value.var = "Estimate")
+df2$diff <- df2$Year_2020 - df2$Year_2010
+
+df3 <- head(df2[order(-df2$diff),], 10)
+df3$Jurisdiction <- as.factor(df3$Jurisdiction)
+df3$Jurisdiction <- reorder(df3$Jurisdiction, df3$diff)
+
+ggplot() +
+  geom_col(data = df3, aes(x = Jurisdiction, y = diff, fill = County)) +
+  scale_y_continuous(labels = scales::label_comma()) +
+  theme(axis.text.x = element_text(angle = 45,
+                                   hjust = 1,
+                                   vjust = 1),
+        plot.title = element_text(size = 13, face = 'bold')) +
+  labs(title = 'Top 10 Cities and Towns',
+       subtitle = 'With the greatest nominal growth between 2010 and 2020',
+       caption = 'OFM April 1, version Sept 2020',
+       x = NULL,
+       y = 'Persons')
+```
+
 
 Using `ofm_april1_population_final_tidied.xlsx`...
 
-  1. Subset for cities/towns and where year is 2010 and 2020
+  1. Subset for cities & towns and where year is 2010 and 2020
   2. Cast the data using the `dcast()` function from the `reshape2` package: 
       - `reshape2::dcast(<your data frame>, County + Jurisdiction ~ paste0("Year_", Year_chr), value.var = "Estimate")`
-  3. Create a new column containing the difference
+  3. Create a new column calculating the difference between 2020 and 2010 estimates
   4. Sort the data frame so that the difference column is in descending order
   5. Take the top 10 rows (use `head()`)
   6. Plot where cities/towns are on the x-axis and the y-axis displays total population estimate
       - Add thousands separator to the Y axis column
-      - Angle the cities/town axis labels and reduce the font size
-      - Change the y-axis title to something more descriptive
       - Add a title and source caption
+      - Angle the cities/town axis labels and change the appearance of other text
+      - Change the axis titles
+      - Fill the bars to reflect which county the cities and towns are in
   7. What order are the cities/town in? Can you reorder the cities/towns based on the value of the difference column?
       - convert the `Jurisdiction` column to a factor
       - use `reorder()`
