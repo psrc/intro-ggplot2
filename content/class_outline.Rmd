@@ -30,7 +30,7 @@ knitr::include_graphics('C:/Users/clam/Documents/github/intro-ggplot2/images/ggp
 
 This module will introduce ggplot2 syntax to create bar and line graphs. Facets and extensions such as plotting using `ggplotly()` will also be demonstrated. 
 
-Data for the code-a-long is a munged OFM April 1 dataset which you can find [here](). For more information about April 1 Estimates and its original format see [Office of Financial Management (OFM)](https://www.ofm.wa.gov/washington-data-research/population-demographics/population-estimates/april-1-official-population-estimates). 
+Data for the code-a-long is a munged OFM April 1 dataset which you can find [here](https://github.com/psrc/intro-ggplot2/raw/main/data/ofm_april1_population_final_tidied.xlsx). For more information about April 1 Estimates and its original format see [Office of Financial Management (OFM)](https://www.ofm.wa.gov/washington-data-research/population-demographics/population-estimates/april-1-official-population-estimates). 
 
 **Handy keyboard shortcuts for Windows:**
 
@@ -98,7 +98,7 @@ Scales control the mapping from the values of the data space to the values of th
 Most follow the format: `scale_{aesthetic}_{method}` or `scale_{aesthetic}_{datatype}` 
 
 ```{r}
-# Using brewers to change the color palette
+# Using brewers to change the color palette. Select from a list of available palettes.
 g +
   geom_col(data = df1, 
            aes(x = Year_chr, y = Estimate, fill = County),
@@ -376,3 +376,24 @@ Sometimes ggplot2 on its own can only do so much. Where there is a gap, R users 
 
 [https://exts.ggplot2.tidyverse.org/gallery/](https://exts.ggplot2.tidyverse.org/gallery/)
 
+# Resources
+
+**The official ggplot2 Cheatsheet:** A two pager with a decent list of geoms available and their aesthetics among other things. A good way to sample what's in ggplot2 without being overwhelmed.  
+
+[https://github.com/rstudio/cheatsheets/blob/master/data-visualization-2.1.pdf
+](https://github.com/rstudio/cheatsheets/blob/master/data-visualization-2.1.pdf
+)
+
+**Labs by Alison Hill et al:** These labs are a tutorial on data munging and visualization with ggplot2 and some of the tidyverse family. You can explore interesting datasets with guidance. Challenges, tips, and solution code are all included.  
+
+[https://apreshill.github.io/data-vis-labs-2018/](https://apreshill.github.io/data-vis-labs-2018/)
+
+**R Graphics Cookbook by Winston Chang:** Any questions on how to do something in ggplot2 can be answered in this book. The text is easy to understand and the combination of explanation, visuals and code make it a book (or e-book) worth having close by.  
+
+[https://r-graphics.org/](https://r-graphics.org/)
+
+**Datacamp courses:** Put your ggplot2 knowledge to practice with ggplot2 related courses. You'll go more in-depth on the ggplot2 components and learn how to munge data as well.
+
+[https://learn.datacamp.com/courses/introduction-to-data-visualization-with-ggplot2
+](https://learn.datacamp.com/courses/introduction-to-data-visualization-with-ggplot2
+)

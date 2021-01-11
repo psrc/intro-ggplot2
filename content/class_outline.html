@@ -1552,7 +1552,7 @@ artwork by <span class="citation">@allison_horst</span>
 </p>
 </div>
 <p>This module will introduce ggplot2 syntax to create bar and line graphs. Facets and extensions such as plotting using <code>ggplotly()</code> will also be demonstrated.</p>
-<p>Data for the code-a-long is a munged OFM April 1 dataset which you can find <a href>here</a>. For more information about April 1 Estimates and its original format see <a href="https://www.ofm.wa.gov/washington-data-research/population-demographics/population-estimates/april-1-official-population-estimates">Office of Financial Management (OFM)</a>.</p>
+<p>Data for the code-a-long is a munged OFM April 1 dataset which you can find <a href="https://github.com/psrc/intro-ggplot2/raw/main/data/ofm_april1_population_final_tidied.xlsx">here</a>. For more information about April 1 Estimates and its original format see <a href="https://www.ofm.wa.gov/washington-data-research/population-demographics/population-estimates/april-1-official-population-estimates">Office of Financial Management (OFM)</a>.</p>
 <p><strong>Handy keyboard shortcuts for Windows:</strong></p>
 <ul>
 <li>Comment a line or lines: <code>Ctrl+Shift+C</code></li>
@@ -1599,7 +1599,7 @@ g +
 <h3>Scales</h3>
 <p>Scales control the mapping from the values of the data space to the values of the aesthetic space<a href="#fn2" class="footnote-ref" id="fnref2"><sup>2</sup></a>. When we map a variable, default settings are used. To change the default and customize those aesthetics, apply a scale function.</p>
 <p>Most follow the format: <code>scale_{aesthetic}_{method}</code> or <code>scale_{aesthetic}_{datatype}</code></p>
-<pre class="r"><code># Using brewers to change the color palette
+<pre class="r"><code># Using brewers to change the color palette. Select from a list of available palettes.
 g +
   geom_col(data = df1, 
            aes(x = Year_chr, y = Estimate, fill = County),
@@ -1831,6 +1831,17 @@ saveWidget(p1, file=&quot;my_plot.html&quot;)  </code></pre>
 <p>Sometimes ggplot2 on its own can only do so much. Where there is a gap, R users have built on top of ggplot2 and created their own libraries to enhance ggplot2 graphs either with animation, better fitted labeling, or specialty geoms to name a few. You can check out the ggplot2 extension gallery here:</p>
 <p><a href="https://exts.ggplot2.tidyverse.org/gallery/">https://exts.ggplot2.tidyverse.org/gallery/</a></p>
 </div>
+</div>
+<div id="resources" class="section level1">
+<h1>Resources</h1>
+<p><strong>The official ggplot2 Cheatsheet:</strong> A two pager with a decent list of geoms available and their aesthetics among other things. A good way to sample what’s in ggplot2 without being overwhelmed.</p>
+<p><a href="https://github.com/rstudio/cheatsheets/blob/master/data-visualization-2.1.pdf">https://github.com/rstudio/cheatsheets/blob/master/data-visualization-2.1.pdf</a></p>
+<p><strong>Labs by Alison Hill et al:</strong> These labs are a tutorial on data munging and visualization with ggplot2 and some of the tidyverse family. You can explore interesting datasets with guidance. Challenges, tips, and solution code are all included.</p>
+<p><a href="https://apreshill.github.io/data-vis-labs-2018/">https://apreshill.github.io/data-vis-labs-2018/</a></p>
+<p><strong>R Graphics Cookbook by Winston Chang:</strong> Any questions on how to do something in ggplot2 can be answered in this book. The text is easy to understand and the combination of explanation, visuals and code make it a book (or e-book) worth having close by.</p>
+<p><a href="https://r-graphics.org/">https://r-graphics.org/</a></p>
+<p><strong>Datacamp courses:</strong> Put your ggplot2 knowledge to practice with ggplot2 related courses. You’ll go more in-depth on the ggplot2 components and learn how to munge data as well.</p>
+<p><a href="https://learn.datacamp.com/courses/introduction-to-data-visualization-with-ggplot2">https://learn.datacamp.com/courses/introduction-to-data-visualization-with-ggplot2</a></p>
 </div>
 <div class="footnotes">
 <hr />
