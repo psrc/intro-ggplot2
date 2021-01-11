@@ -1577,7 +1577,7 @@ df &lt;- read.xlsx(&quot;ofm_april1_population_final_tidied.xlsx&quot;, detectDa
 </div>
 <div id="bar-graph" class="section level2">
 <h2>Bar Graph</h2>
-<p>To create a simple bar graph, we’ll use a subset of the the data. Query for only total county estimates (where column <code>Filter</code> equals 1)</p>
+<p>To create a simple bar graph focused on total population by county and year, we’ll use a subset of the the data. Query for only total county estimates (where column <code>Filter</code> equals 1)</p>
 <pre class="r"><code>df1 &lt;- df[df$Filter == 1, ]</code></pre>
 <div id="initiate-ggplot" class="section level3">
 <h3>Initiate ggplot</h3>

@@ -62,7 +62,7 @@ df <- read.xlsx("ofm_april1_population_final_tidied.xlsx", detectDates = TRUE)
 
 ## Bar Graph
 
-To create a simple bar graph, we'll use a subset of the the data. Query for only total county estimates (where column `Filter` equals 1)
+To create a simple bar graph focused on total population by county and year, we'll use a subset of the the data. Query for only total county estimates (where column `Filter` equals 1)
 ```{r}
 df1 <- df[df$Filter == 1, ]
 ```

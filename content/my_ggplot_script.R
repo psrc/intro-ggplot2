@@ -11,24 +11,3 @@ df <- read.xlsx("ofm_april1_population_final_tidied.xlsx", detectDates = TRUE)
 
 
 # Bar Graph: Total Population by County and Year --------------------------
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
