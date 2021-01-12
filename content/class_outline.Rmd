@@ -233,6 +233,11 @@ my.plot <- g + <other stuff>
 ggsave("my_plot.jpg", plot = my.plot, width = 5, units = "in")
 ```
 
+### Or save as a PDF
+```{r}
+ggsave("my_plot.pdf", plot = my.plot, width = 5, units = "in", device = cairo_pdf)
+```
+
 ## Other geoms
 
 We can transform our bar graph into a line graph, but instead of `Year_chr`, use `Year_dt`. The datatype of the variable can influence what geoms can be used and how it is displayed on the axis.
