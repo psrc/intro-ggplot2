@@ -1,0 +1,247 @@
+---
+title: 'Homework Solution'
+output: 
+  html_document:
+    theme: readable
+    toc: true
+    toc_depth: 5
+    toc_float: true
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+First let's load our libraries
+```{r}
+library(ggplot2)
+library(openxlsx)
+library(reshape2)
+```
+
+## Multiple Choice
+
+Given the following graph...
+```{r, eval=TRUE, fig.align='center'}
+title <- 'Fuel Economy of Popular Cars'
+legend.title <- 'Type of Car'
+
+p <- ggplot(mpg, aes(displ, hwy, color = class)) + 
+  geom_point()
+```
+
+The dataset `mpg` is actually a dataset built into R. When we download R or install packages, each comes with datasets. Similar to functions, you can type `?mpg` in the console to find its metadata. Built in datasets such as `mpg` allow us to create reproducible examples--code that anyone can run on their computer as long as they have R and that particular package.
+
+To see all the built-in datasets available, type `data()` into your console. Call some additional libraries and run `data()` again.
+
+#### Which are ways that you can change the legend titles? Select all that apply.
+
+<mark>
+  a. `scale_color_discrete(name = legend.title)`
+</mark>  
+
+  b. `theme(legend.title = element_text(legend.title))`
+  c. `theme(legend.text = element_text(title = legend.title))`  
+
+<mark>
+  d. `labs(color = legend.title)`
+</mark>
+
+We can change the legend titles with **a** and **d**. `theme()` can change the appearance (e.g. font, text size, text face, position) of an existing legend title but we can't create or rename it with the `theme()` layer. 
+
+#### Which are ways that you can add a title to your graph? Select all that apply.
+
+<mark>
+  a. `labs(title = title)`
+</mark>
+
+<mark>
+  b. `ggtitle(title)`
+</mark>
+
+<mark>
+  c. `annotate('text', label = title, x = min(mpg$displ) + 3.5, y = max(mpg$hwy), size = 4)`
+</mark>
+
+  d. `theme(plot.title = element_text(title))`
+
+Options **a**, **b**, and **c** are valid options. Again, `theme()` can help change the appearance of an existing title but can't generate one. 
+
+#### So what's the difference between `labs()`, `ggtitle()`, and `annotate()`?
+
+`ggtitle()` is the equivalent of using `labs(title = 'My title', subtitle = 'My subtitle')`.
+
+```{r, fig.align='center'}
+p + ggtitle(title, 'Engine displacement (L) by highway miles per gallon')
+```
+
+With `ggtitle()` and `labs()` you can adjust its vertical position with `theme()` but they will still reserve blank space above the plotting region for the title. 
+
+```{r, eval=FALSE}
+# Moving your title inside with ggtitle() or labs()
+p + 
+  ggtitle(title) +
+  theme(plot.title = element_text(vjust = -8, hjust = .8))
+
+# Moving your title inside with annotation
+p + 
+  annotate('text', label = title, x = min(mpg$displ) + 3.5, y = max(mpg$hwy), size = 4.5)
+
+```
+
+<div class='row'>
+<img src='C:/Users/clam/Documents/github/intro-ggplot2/images/t1.jpg' width=45%>
+<img src='C:/Users/clam/Documents/github/intro-ggplot2/images/t2.jpg' width=45%>
+</div>
+
+## Cereal Data
+
+#### Create a scatterplot exploring select breakfast cereals. What is the relationship between cereal ratings and grams of sugar?
+
+It appears that cereals with more sugar receive a lower rating. Perhaps a particular demographic was rating these cereals or maybe these ratings were derived from consumer reports...
+```{r, fig.align='center'}
+
+# read in excel sheet
+my.dir <- 'C:/Users/clam/Documents/github/intro-ggplot2/data'
+df <- read.xlsx(file.path(my.dir, 'cereal.xlsx'))
+
+# calculate sugars per oz in new column
+df$sugars_per_oz <- df$sugars/df$weight
+
+# plot it
+ggplot(df, 
+       aes(x = sugars_per_oz, 
+           y = rating, 
+           color = mfr,
+           shape = type)) +
+  geom_point() +
+  scale_shape_manual(values = c(3, 15))
+```
+
+#### Notice anything interesting with the sugar column in the dataset? 
+
+Using graphs to explore this dataset, it looks like negative values exist! The range of values for the `sugars_per_oz` column is -1 and 15.
+```{r}
+range(df$sugars_per_oz)
+```
+
+Quaker Oatmeal has -1 sugars/oz?!
+```{r}
+df[df$sugars_per_oz == -1, ]
+```
+
+Golden Crisp and Smacks have the most sugars/oz.
+```{r}
+df[df$sugars_per_oz == 15, ]
+```
+
+Cereals with the words 'Wheat' or 'Rice' or 'Fiber' have no sugars
+```{r}
+df[df$sugars_per_oz == 0, ]
+```
+
+#### On which shelf can you find the cereal with the highest rating?  
+
+We can find the highest rated cereal (All-Bran with Extra Fiber) on the third shelf.
+```{r, fig.align='center'}
+
+# create a new data frame with the highest rated cereal
+df2 <- df[df$rating == max(df$rating), ]
+
+ggplot(df, 
+       aes(x = sugars_per_oz, 
+           y = rating, 
+           color = mfr,
+           shape = type)) +
+  geom_point() +
+  scale_shape_manual(values = c(3, 15), 
+                     labels = c("Cold", "Hot")) +
+  facet_wrap(vars(shelf)) +
+  labs(x = 'Sugars(g) per Ounce', 
+       y = 'Rating', 
+       color = 'Manufacturer', 
+       shape = 'Type') +
+  scale_color_discrete(labels = c("American Home\nFood Products",
+                                  "General Mills",
+                                  "Kelloggs",
+                                  "Nabisco",
+                                  "Post",
+                                  "Quaker Oats",
+                                  "Ralston Purina")) +
+  geom_text(data = df2, 
+            aes(x = sugars_per_oz + 1, 
+                y = rating, 
+                label = name), 
+            size = 2, 
+            hjust = 0) +
+  theme(legend.text = element_text(size = 6))
+```
+
+## OFM Data
+
+#### Create a bar graph of cities & towns with the greatest nominal growth between 2010 and 2020 like the one below...
+
+```{r}
+# read excel sheet
+my.dir <- 'C:/Users/clam/Documents/github/intro-ggplot2/data'
+df <- read.xlsx(file.path(my.dir, "ofm_april1_population_final_tidied.xlsx"), detectDates = T)
+
+# subset the data for only cities & towns for years 2010 and 2020
+df1 <- df[df$Filter == 4 & df$Year_chr %in% c(2010, 2020), ]
+
+# cast the data so that each observation has a 2010 and 2020 estimate
+df2 <- dcast(df1, County + Jurisdiction ~ paste0("Year_", Year_chr), value.var = "Estimate")
+
+# calculate the difference
+df2$diff <- df2$Year_2020 - df2$Year_2010
+
+# sort the data based on the difference column in decending order
+# and take only the top 10 observations
+df3 <- head(df2[order(-df2$diff),], 10)
+
+df3
+```
+
+At this point if we graphed our data, the cities and towns would be in alphabetical order
+```{r, fig.align='center'}
+# create our graph and the x-axis is arranged in alphabetical order
+ggplot() +
+  geom_col(data = df3, aes(x = Jurisdiction, y = diff, fill = County)) +
+  scale_y_continuous(labels = scales::label_comma()) +
+  theme(axis.text.x = element_text(angle = 45,
+                                   hjust = 1,
+                                   vjust = 1),
+        plot.title = element_text(size = 13, face = 'bold')) +
+  labs(title = 'Top 10 Cities and Towns',
+       subtitle = 'With the greatest nominal growth between 2010 and 2020',
+       caption = 'OFM April 1, version Sept 2020',
+       x = NULL,
+       y = 'Persons')
+
+```
+
+#### Factor and reordering
+
+Using `as.factor()` to convert `Jurisdiction` into a factor datatype and then `reorder()` to reorder based on another column allows the sorting to be based on values of the difference column.
+```{r, fig.align='center'}
+# convert Jurisdiction column into a factor and reorder it based on the difference column
+df3$Jurisdiction <- as.factor(df3$Jurisdiction)
+df3$Jurisdiction <- reorder(df3$Jurisdiction, df3$diff)
+
+# print the plot again
+ggplot() +
+  geom_col(data = df3, aes(x = Jurisdiction, y = diff, fill = County)) +
+  scale_y_continuous(labels = scales::label_comma()) +
+  theme(axis.text.x = element_text(angle = 45,
+                                   hjust = 1,
+                                   vjust = 1),
+        plot.title = element_text(size = 13, face = 'bold')) +
+  labs(title = 'Top 10 Cities and Towns',
+       subtitle = 'With the greatest nominal growth between 2010 and 2020',
+       caption = 'OFM April 1, version Sept 2020',
+       x = NULL,
+       y = 'Persons')
+```
+
+
+
