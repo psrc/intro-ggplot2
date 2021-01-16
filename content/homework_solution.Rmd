@@ -11,12 +11,14 @@ output:
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 ```
+The solutions below will use base R syntax as learned in modules 1-3.
 
 First let's load our libraries
 ```{r}
 library(ggplot2)
 library(openxlsx)
 library(reshape2)
+library(scales)
 ```
 
 ## Multiple Choice
@@ -34,7 +36,7 @@ The dataset `mpg` is actually a dataset built into R. When we download R or inst
 
 To see all the built-in datasets available, type `data()` into your console. Call some additional libraries and run `data()` again.
 
-#### Which are ways that you can change the legend titles? Select all that apply.
+### Which are ways that you can change the legend titles? Select all that apply.
 
 <mark>
   a. `scale_color_discrete(name = legend.title)`
@@ -49,7 +51,7 @@ To see all the built-in datasets available, type `data()` into your console. Cal
 
 We can change the legend titles with **a** and **d**. `theme()` can change the appearance (e.g. font, text size, text face, position) of an existing legend title but we can't create or rename it with the `theme()` layer. 
 
-#### Which are ways that you can add a title to your graph? Select all that apply.
+### Which are ways that you can add a title to your graph? Select all that apply.
 
 <mark>
   a. `labs(title = title)`
@@ -67,7 +69,7 @@ We can change the legend titles with **a** and **d**. `theme()` can change the a
 
 Options **a**, **b**, and **c** are valid options. Again, `theme()` can help change the appearance of an existing title but can't generate one. 
 
-#### So what's the difference between `labs()`, `ggtitle()`, and `annotate()`?
+### So what's the difference between `labs()`, `ggtitle()`, and `annotate()`?
 
 `ggtitle()` is the equivalent of using `labs(title = 'My title', subtitle = 'My subtitle')`.
 
@@ -96,7 +98,7 @@ p +
 
 ## Cereal Data
 
-#### Create a scatterplot exploring select breakfast cereals. What is the relationship between cereal ratings and grams of sugar?
+### Create a scatterplot exploring select breakfast cereals. What is the relationship between cereal ratings and grams of sugar?
 
 It appears that cereals with more sugar receive a lower rating. Perhaps a particular demographic was rating these cereals or maybe these ratings were derived from consumer reports...
 ```{r, fig.align='center'}
@@ -118,7 +120,7 @@ ggplot(df,
   scale_shape_manual(values = c(3, 15))
 ```
 
-#### Notice anything interesting with the sugar column in the dataset? 
+### Notice anything interesting with the sugar column in the dataset? 
 
 Using graphs to explore this dataset, it looks like negative values exist! The range of values for the `sugars_per_oz` column is -1 and 15.
 ```{r}
@@ -140,7 +142,7 @@ Cereals with the words 'Wheat' or 'Rice' or 'Fiber' have no sugars
 df[df$sugars_per_oz == 0, ]
 ```
 
-#### On which shelf can you find the cereal with the highest rating?  
+### On which shelf can you find the cereal with the highest rating?  
 
 We can find the highest rated cereal (All-Bran with Extra Fiber) on the third shelf.
 ```{r, fig.align='center'}
@@ -179,7 +181,7 @@ ggplot(df,
 
 ## OFM Data
 
-#### Create a bar graph of cities & towns with the greatest nominal growth between 2010 and 2020 like the one below...
+### Create a bar graph of cities & towns with the greatest nominal growth between 2010 and 2020 like the one below...
 
 ```{r}
 # read excel sheet
@@ -207,7 +209,7 @@ At this point if we graphed our data, the cities and towns would be in alphabeti
 # create our graph and the x-axis is arranged in alphabetical order
 ggplot() +
   geom_col(data = df3, aes(x = Jurisdiction, y = diff, fill = County)) +
-  scale_y_continuous(labels = scales::label_comma()) +
+  scale_y_continuous(labels = label_comma()) +
   theme(axis.text.x = element_text(angle = 45,
                                    hjust = 1,
                                    vjust = 1),
@@ -220,7 +222,7 @@ ggplot() +
 
 ```
 
-#### Factor and reordering
+### Factor and reordering
 
 Using `as.factor()` to convert `Jurisdiction` into a factor datatype and then `reorder()` to reorder based on another column allows the sorting to be based on values of the difference column.
 ```{r, fig.align='center'}
@@ -231,7 +233,7 @@ df3$Jurisdiction <- reorder(df3$Jurisdiction, df3$diff)
 # print the plot again
 ggplot() +
   geom_col(data = df3, aes(x = Jurisdiction, y = diff, fill = County)) +
-  scale_y_continuous(labels = scales::label_comma()) +
+  scale_y_continuous(labels = label_comma()) +
   theme(axis.text.x = element_text(angle = 45,
                                    hjust = 1,
                                    vjust = 1),
